@@ -1,14 +1,15 @@
 
 
-	public class cell {
+	public class Checker {
 		private Position position;
 			private int color;
 
-			public cell() {
+
+			public Checker() {
 
 			}
 
-			public cell(int color, Position position) {
+			public Checker(int color, Position position) {
 				this.position = position; 
 				this.color = color;
 			}

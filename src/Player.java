@@ -3,7 +3,7 @@ public class Player {
 	private String name;
 	private int color;
 	private boolean turn;
-	private cell [] myCheckers = new cell[12];
+	private Checker [] myCheckers = new Checker[12];
 
 	public Player(int color, boolean turn) {
 		this.color = color;
@@ -34,7 +34,7 @@ public class Player {
 		this.turn = turn;
 	}
 
-	public void setMyCheckers(cell[] myCheckers) {
+	public void setMyCheckers(Checker[] myCheckers) {
 		this.myCheckers = myCheckers;
 	}
 
@@ -51,14 +51,14 @@ public class Player {
 		return turn;
 	}
 
-	public cell[] getMyCheckers() {
+	public Checker[] getMyCheckers() {
 		return myCheckers;
 	}
 
 	public void addChecker(Position p) {
 		for (int i = 0; i < getMyCheckers().length; i++) {
 			if (getMyCheckers()[i] == null) {
-				getMyCheckers()[i] = new cell(this.getColor(), p);
+				getMyCheckers()[i] = new Checker(this.getColor(), p);
 				return;
 			}
 		}
