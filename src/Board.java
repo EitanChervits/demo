@@ -3,13 +3,14 @@ public class Board {
 	private Checker[][] checkers = new Checker[8][8];
 	private Player white;
 	private Player black;
-	int directions[] = new int[8];/* each cell has 8 directions in which he can go,
-									the directions are numbers between 0-7 clockwise.*/
+	private LinkedList list = new LinkedList();// the list will contain the number of cells the player can go in each direction
 
 	public Board() {
 		white = new Player(1, true);
 		black = new Player(2, false);
-		// need to build setStartConfig();
+		for (int i = 0; i < 8; i++) {
+			list.add(i,0);
+		}
 	}
 
 	// getters
@@ -52,18 +53,19 @@ public class Board {
 				counter++;
 		}
 		if (x + counter < 8 && checkers[x + counter][y].getColor() != c.getColor())
-			directions[4] = 1;//the cell can go in that direction(down)
+			list.goTO(4,counter); ;//the cell can go in that direction(down)
 		if (x - counter >= 0 && checkers[x - counter][y].getColor() != c.getColor())
-			directions[0] = 1;//the cell can go in that direction(up)
+			list.goTO(1,counter);//the cell can go in that direction(up)
+
 		// number of checkers in left and right direction
 		for (int i = counter = 0; i < 8; i++) {
 			if (checkers[x][i].getColor() != 0)
 				counter++;
 		}
 		if (y + counter < 8 && checkers[x][y + counter].getColor() != c.getColor())
-			directions[2] = 1;//the cell can go in that direction(right)
+			list.goTO(2,counter);//the cell can go in that direction(right)
 		if (y - counter >= 0 && checkers[x][y - counter].getColor() != c.getColor())
-			directions[6] = 1;//the cell can go in that direction(left)
+			list.goTO(6,counter);//the cell can go in that direction(left)
 		//from up left to bottom right
 		if (x >= y) {
 			for (int i = x - y, j = counter = 0; i < 8; j++, i++) {
@@ -77,9 +79,9 @@ public class Board {
 			}
 		}
 		if (y + counter < 8 && x + counter < 8 && checkers[x + counter][y + counter].getColor() != c.getColor())
-			directions[3] = 1;//top left
+			list.goTO(3,counter);//top left
 		if (y - counter < 8 && x - counter < 8 && checkers[x - counter][y - counter].getColor() != c.getColor())
-			directions[7] = 1;//bottom right
+			list.goTO(7,counter);//bottom right
 		//from up right to bottom left
 		if (x + y <= 7) {
 			for (int i = 0, j = x + y; i <= x + y; i++, j--) {
@@ -93,9 +95,9 @@ public class Board {
 			}
 		}
 		if (y + counter < 8 && x - counter < 8 && checkers[x - counter][y + counter].getColor() != c.getColor())
-			directions[1] = 1;//top right
+			list.goTO(1,counter);//top right
 		if (y - counter < 8 && x + counter < 8 && checkers[x + counter][y - counter].getColor() != c.getColor())
-			directions[5] = 1;//bottom left
+			list.goTO(5,counter);//bottom left
 
 	}
 }
