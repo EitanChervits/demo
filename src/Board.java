@@ -42,6 +42,33 @@ public class Board {
 	public void setBlackPlayer(Player p) {
 		black = p;
 	}
+	/*the function generates position and color for all the cells on the board;*/
+	public void setCheckers(){
+		Position p = new Position();
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j <8 ; j++) {
+				p.setX(i);
+				p.setY(j);
+				checkers[i][j].setPosition(p);// sets position for each cell
+				if ((i==0||i==7)&&(j!=0&&j!=7))
+					checkers[i][j].setColor(2);//sets all the black cells
+				else if((i!=0&&i!=7)&&(j==0||j==7))
+					checkers[i][j].setColor(1);//sets all the white cells
+				else checkers[i][j].setColor(0);//sets the empty cells
+			}
+		}
+	}
+
+	public void setPlayersCheckers(){
+		for (int i = 0; i <8 ; i++) {
+			for (int j = 0; j < 8; j++) {
+				if(checkers[i][j].getColor()==1)
+					white.getMyCheckers()[i].setPosition(checkers[i][j].getPosition());
+				else if (checkers[i][j].getColor()==2)
+					black.getMyCheckers()[i].setPosition(checkers[i][j].getPosition());
+			}
+		}
+	}
 
 	public void canGo(Checker c) {
 		int x = c.getPosition().getX();
@@ -100,4 +127,6 @@ public class Board {
 			list.goTO(5,counter);//bottom left
 
 	}
+
+
 }
