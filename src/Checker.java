@@ -3,7 +3,7 @@
 public class Checker {
 	private Position position;
 	private int color;
-
+	private int touch;
 	public Checker() {
 
 	}
