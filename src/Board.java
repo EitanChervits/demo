@@ -69,47 +69,49 @@ public class Board {
 			}
 		}
 	}
+public int countUpDown(Checker c) {
+	int x = c.getPosition().getX();
+	int y = c.getPosition().getY();
+	int counter = 0;
+	// number of checkers in up and down direction
+	for (int i = 0; i < 8; i++) {
+		if (checkers[i][y].getColor() != 0)
+			counter++;
+	}
+	return counter;
+}
 
-	public void canGo(Checker c) {
+public int countLeftRight(Checker c){
+	int x = c.getPosition().getX();
+	int y = c.getPosition().getY();
+	int counter = 0;
+		for (int i = counter = 0; i < 8; i++) {
+		if (checkers[x][i].getColor() != 0)
+			counter++;
+	}
+		return counter;
+}
+public  int countTopLeftToBottomRight(Checker c){
+	int x = c.getPosition().getX();
+	int y = c.getPosition().getY();
+	int counter = 0;
+		if (x >= y) {
+		for (int i = x - y, j = counter = 0; i < 8; j++, i++) {
+			if (checkers[i][j].getColor() != 0)
+				counter++;
+		}
+	} else if (y > x) {
+		for (int i = counter = 0, j = y - x; j < 8; j++, i++) {
+			if (checkers[i][j].getColor() != 0)
+				counter++;
+		}
+	}
+		return counter;
+}
+	public  int countTopRightToBottomLeft(Checker c){
 		int x = c.getPosition().getX();
 		int y = c.getPosition().getY();
 		int counter = 0;
-		// number of checkers in up and down direction
-		for (int i = 0; i < 8; i++) {
-			if (checkers[i][y].getColor() != 0)
-				counter++;
-		}
-		if (x + counter < 8 && checkers[x + counter][y].getColor() != c.getColor())
-			list.goTO(4,counter); ;//the cell can go in that direction(down)
-		if (x - counter >= 0 && checkers[x - counter][y].getColor() != c.getColor())
-			list.goTO(1,counter);//the cell can go in that direction(up)
-
-		// number of checkers in left and right direction
-		for (int i = counter = 0; i < 8; i++) {
-			if (checkers[x][i].getColor() != 0)
-				counter++;
-		}
-		if (y + counter < 8 && checkers[x][y + counter].getColor() != c.getColor())
-			list.goTO(2,counter);//the cell can go in that direction(right)
-		if (y - counter >= 0 && checkers[x][y - counter].getColor() != c.getColor())
-			list.goTO(6,counter);//the cell can go in that direction(left)
-		//from up left to bottom right
-		if (x >= y) {
-			for (int i = x - y, j = counter = 0; i < 8; j++, i++) {
-				if (checkers[i][j].getColor() != 0)
-					counter++;
-			}
-		} else if (y > x) {
-			for (int i = counter = 0, j = y - x; j < 8; j++, i++) {
-				if (checkers[i][j].getColor() != 0)
-					counter++;
-			}
-		}
-		if (y + counter < 8 && x + counter < 8 && checkers[x + counter][y + counter].getColor() != c.getColor())
-			list.goTO(3,counter);//top left
-		if (y - counter < 8 && x - counter < 8 && checkers[x - counter][y - counter].getColor() != c.getColor())
-			list.goTO(7,counter);//bottom right
-		//from up right to bottom left
 		if (x + y <= 7) {
 			for (int i = 0, j = x + y; i <= x + y; i++, j--) {
 				if (checkers[i][j].getColor() != 0)
@@ -121,6 +123,32 @@ public class Board {
 					counter++;
 			}
 		}
+		return counter;
+	}
+
+	public void canGo(Checker c) {
+		int x = c.getPosition().getX();
+		int y = c.getPosition().getY();
+		int counter = countUpDown(c);
+		//can go up and down
+		if (x +counter < 8 && checkers[x + counter][y].getColor() != c.getColor())
+			list.goTO(4,counter); ;//the cell can go in that direction(down)
+		if (x - counter >= 0 && checkers[x - counter][y].getColor() != c.getColor())
+			list.goTO(1,counter);//the cell can go in that direction(up)
+		// number of checkers in left and right direction
+		counter = countLeftRight(c);
+		if (y + counter < 8 && checkers[x][y + counter].getColor() != c.getColor())
+			list.goTO(2,counter);//the cell can go in that direction(right)
+		if (y - counter >= 0 && checkers[x][y - counter].getColor() != c.getColor())
+			list.goTO(6,counter);//the cell can go in that direction(left)
+		//from up left to bottom right
+		counter = countTopLeftToBottomRight(c);
+		if (y + counter < 8 && x + counter < 8 && checkers[x + counter][y + counter].getColor() != c.getColor())
+			list.goTO(3,counter);//top left
+		if (y - counter < 8 && x - counter < 8 && checkers[x - counter][y - counter].getColor() != c.getColor())
+			list.goTO(7,counter);//bottom right
+		//from up right to bottom left
+		counter = countTopRightToBottomLeft(c);
 		if (y + counter < 8 && x - counter < 8 && checkers[x - counter][y + counter].getColor() != c.getColor())
 			list.goTO(1,counter);//top right
 		if (y - counter < 8 && x + counter < 8 && checkers[x + counter][y - counter].getColor() != c.getColor())
