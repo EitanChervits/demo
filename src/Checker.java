@@ -4,6 +4,7 @@ public class Checker {
 	private Position position;
 	private int color;
 	private int touch;
+	private boolean checked;
 	public Checker() {
 
 	}
@@ -11,6 +12,7 @@ public class Checker {
 	public Checker(int color, Position position) {
 		this.position = position;
 		this.color = color;
+		this.checked = false;
 	}
 
 	// getters

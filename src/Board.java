@@ -155,6 +155,89 @@ public  int countTopLeftToBottomRight(Checker c){
 			list.goTO(5,counter);//bottom left
 
 	}
+	/*	0	1	2
+		3	cell 4
+		5	6	7
+	each number represents a direction */
+ public void sendDirection(Checker checker){
+	 for (int i = 0; i <8 ; i++) {
+		whichCell(i,checker);
+	 }
+
+ }
+//c is the cell in the area of the cell we are testing
+	private Checker whichCell(int i, Checker checker) {
+	 int x = checker.getPosition().getX();
+	 int y = checker.getPosition().getY();
+	 Checker c = null;
+	 switch (i){
+		 case 0:
+		 	c = checkers[x-1][y-1];
+		 	break;
+		 case 1:
+		 	c = checkers[x-1][y];
+			 break;
+		 case 2:
+			 c = checkers[x-1][y+1];
+			 break;
+		 case 3:
+			 c = checkers[x][y-1];
+			 break;
+		 case 4:
+			 c = checkers[x][y+1];
+			 break;
+		 case 5:
+			 c = checkers[x+1][y-1];
+			 break;
+		 case 6:
+			 c = checkers[x+1][y];
+			 break;
+		 case 7:
+			 c = checkers[x+1][y+1];
+			 break;
+	 }
+	 return c;
+	}
 
 
+
+	/* boolean piecesContiguous(Side player) {
+        boardTraverse += 1;
+        int numberPieces = 0;
+        BoardSpot firstSpot = null;
+        for (BoardSpot[] array: boardspots) {
+            for (BoardSpot spot: array) {
+                if (spot == null) {
+                    continue;
+                }
+                if (spot.getPiece().side() == player) {
+                    numberPieces += 1;
+                    if (firstSpot == null) {
+                        firstSpot = spot;
+                    }
+                }
+            }
+        }
+        int contigPieces = 0;
+        LinkedList<BoardSpot> stack = new LinkedList<BoardSpot>();
+        stack.push(firstSpot);
+        BoardSpot spot;
+        while (!stack.isEmpty()) {
+            contigPieces += 1;
+            spot = stack.poll();
+            spot.setTraverseNum(boardTraverse);
+            for (BoardSpot contigSpot: spot.getSpotArray()) {
+                if (contigSpot == null) {
+                    continue;
+                }
+                if (contigSpot.getPiece().side() == player
+                        && contigSpot.getTraverseNum() != boardTraverse) {
+                    contigSpot.setTraverseNum(boardTraverse);
+                    stack.push(contigSpot);
+                }
+            }
+
+        }
+        return (numberPieces == contigPieces);
+    }*/
 }
