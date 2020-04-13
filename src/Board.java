@@ -1,4 +1,5 @@
 import java.util.Stack;
+
 public class Board {
 	private Checker[][] checkers = new Checker[8][8];
 	private Player white;
@@ -166,6 +167,8 @@ public  int countTopLeftToBottomRight(Checker c){
 
  }*/
 //c is the cell in the area of the cell we are testing
+
+	// What happens if you call this method with the checker in (0,0) and i=0?
 	private Checker whichCell(int i, Checker checker) {
 	 int x = checker.getPosition().getX();
 	 int y = checker.getPosition().getY();
@@ -198,6 +201,10 @@ public  int countTopLeftToBottomRight(Checker c){
 	 }
 	 return c;
 	}
+
+	// Looks pretty good overall, but pay attention to the comment for the method above
+	// In addition, you forgot to ad the reset of the checked boolean field for all the relevant checkers
+	// (consider adding a method in Player that resets the "checked" for all it's checkers)
 	public boolean piecesContiguous(Player player){
 		int contigPieces = 0;
 		Stack<Checker> stack = new Stack<Checker>();
@@ -262,6 +269,8 @@ public  int countTopLeftToBottomRight(Checker c){
         }
         return (numberPieces == contigPieces);
     }*/
+
+	// Consider moving this method to the Player class, I don't see a reason for it to be here
 	public void deleteAPiece(Checker checker,Player player){
 		Checker c = null;
 		for (int i = 0; i<player.getMyCheckers().length;i++){
