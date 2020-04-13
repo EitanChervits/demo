@@ -24,6 +24,10 @@ public class Checker {
 		return position;
 	}
 
+	public boolean isChecked() {
+		return checked;
+	}
+
 	// setters
 	public void setPosition(Position p) {
 		position = p;
@@ -31,6 +35,10 @@ public class Checker {
 
 	public void setColor(int c) {
 		color = c;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 
 	public String toString() {

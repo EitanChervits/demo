@@ -1,4 +1,4 @@
-
+import java.util.Stack;
 public class Board {
 	private Checker[][] checkers = new Checker[8][8];
 	private Player white;
@@ -159,12 +159,12 @@ public  int countTopLeftToBottomRight(Checker c){
 		3	cell 4
 		5	6	7
 	each number represents a direction */
- public void sendDirection(Checker checker){
+ /*public void sendDirection(Checker checker){
 	 for (int i = 0; i <8 ; i++) {
 		whichCell(i,checker);
 	 }
 
- }
+ }*/
 //c is the cell in the area of the cell we are testing
 	private Checker whichCell(int i, Checker checker) {
 	 int x = checker.getPosition().getX();
@@ -198,8 +198,30 @@ public  int countTopLeftToBottomRight(Checker c){
 	 }
 	 return c;
 	}
+	public boolean piecesContiguous(Player player){
+		int contigPieces = 0;
+		Stack<Checker> stack = new Stack<Checker>();
+		Checker firstSpot = player.getMyCheckers()[0];
+		stack.push(firstSpot);
+		firstSpot.setChecked(true);
+		while (!stack.isEmpty()) {
+			contigPieces++;
+			for (int i = 0; i <8 ; i++) {
+				Checker c = (whichCell(i,stack.pop()));
+				if(c==null){
+					continue;
+				}
 
+				if(c.getColor() == player.getColor()){
+					c.setChecked(true);
+					stack.push(c);
+				}
 
+			}
+
+		}
+		return 	(contigPieces == player.getMyCheckers().length);
+	}
 
 	/* boolean piecesContiguous(Side player) {
         boardTraverse += 1;
@@ -240,4 +262,14 @@ public  int countTopLeftToBottomRight(Checker c){
         }
         return (numberPieces == contigPieces);
     }*/
+	public void deleteAPiece(Checker checker,Player player){
+		Checker c = null;
+		for (int i = 0; i<player.getMyCheckers().length;i++){
+			c = player.getMyCheckers()[i];
+			if(c.getPosition() == checker.getPosition()){
+				player.getMyCheckers()[i] = player.getMyCheckers()[player.getMyCheckers().length-1];
+				player.getMyCheckers()[player.getMyCheckers().length-1] = null;
+			}
+		}
+	}
 }
