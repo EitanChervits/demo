@@ -155,14 +155,153 @@ public  int countTopLeftToBottomRight(Checker c){
 			list.goTO(5,counter);//bottom left
 
 	}
+	//identifies in what part of the board the border cell is located,
+	// if the cell is bottom position sends it to borderCellsBottom
+	public Checker  borderCells(int i, Checker checker){
+		int x = checker.getPosition().getX();
+		int y = checker.getPosition().getY();
+		Checker c = null;
+		if(x==7||y==7)
+			return borderCellsBottom(i,checker);
+		if(x==0&&i<3)return null;
+		 if(y==0&&i>3){
+		 	if(x==0){
+		 		return case4To7(i,x,y);
+			}
+		 	switch (i){
+				case 1:
+					c = checkers[x-1][y];
+					break;
+				case 2:
+					c = checkers[x-1][y+1];
+					break;
+				default:
+					return case4To7(i,x,y);
+			}
+		 	if (x==0){
+		 		switch (i){
+					case 3:
+						c = checkers[x][y-1];
+						break;
+					case 5:
+						c = checkers[x+1][y-1];
+						break;
+					case 7:
+						c = checkers[x+1][y+1];
+						break;
+					default: return case4To7(i,x,y);
+				}
+			}
+		 }
+		return c;
+	}
+	//sums up all the cases when we need cells in positions 4,6,7
+	private Checker case4To7(int i,int x,int y){
+		Checker c = null;
+		switch (i){
+			case 4:
+				c = checkers[x][y+1];
+				break;
+			case 6:
+				c = checkers[x+1][y];
+				break;
+			case 7:
+				c = checkers[x+1][y+1];
+				break;
+		}
+
+		return c;
+	}
+	//sums up all the cases of the directions 1,2,4
+	private Checker case1To4(int i,int x,int y){
+		Checker c = null;
+		switch (i){
+			case 4:
+				c = checkers[x][y+1];
+				break;
+			case 1:
+				c = checkers[x-1][y];
+				break;
+			case 2:
+				c = checkers[x-1][y+1];
+				break;
+		}
+
+		return c;
+	}
+	//sums up all the cases of the 3rd direction
+	private Checker case3(int x,int y){ return checkers[x][y-1];
+	}
+// sorts the bottom cells by identifying the position and matching the available directions
+	public Checker borderCellsBottom(int i, Checker checker){
+		Checker c= null;
+		int x = checker.getPosition().getX();
+		int y = checker.getPosition().getY();
+		if(x==7){
+			if(y==0){
+				return case1To4(i,x,y);
+			}
+			if(y==7){
+				switch (i){
+					case 0:
+					c = checkers[x-1][y-1];
+					break;
+					case 1:
+						c = checkers[x-1][y];
+						break;
+					default:return case3(x,y);
+				}
+			}
+			switch (i){
+				case 0:
+					c = checkers[x-1][y-1];
+					break;
+				case 3:
+					c = checkers[x][y-1];
+					break;
+				default:return case1To4(i,x,y);
+			}
+		}
+		if (y==7){
+			if (x==0) {
+				switch (i) {
+					case 3:
+						c = checkers[x][y - 1];
+						break;
+					case 5:
+						c = checkers[x + 1][y - 1];
+						break;
+					default:
+						return case3(x, y);
+				}
+			}
+		switch (i){
+			case 0:
+				c = checkers[x-1][y-1];
+				break;
+			case 1:
+				c = checkers[x-1][y];
+				break;
+			case 5:
+				c = checkers[x+1][y-1];
+				break;
+			case 6:
+				c = checkers[x+1][y];
+				break;
+			default: return case3(x,y);
+
+		}
+		}
+		return c;
+	}
 
 //c is the cell in the area of the cell we are testing
-//the function receives a direction, and a checker and returns the checker in that specific direction
+//the function receives a direction, and a checker and returns the checker in that specific
 	private Checker whichCell(int i, Checker checker) {
 	 int x = checker.getPosition().getX();
 	 int y = checker.getPosition().getY();
-	if(x-1<0||y-1<0||x+1>7||y+1>7)
-		return null;
+	 if (checker.cellIsBorder())
+	 	return borderCells( i, checker);
 	 Checker c = null;
 	 switch (i){
 		 case 0:

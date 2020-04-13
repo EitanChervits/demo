@@ -65,11 +65,11 @@ public class Player {
 	}
 	public void deleteAPiece(Checker checker){
 		Checker c = null;
-		for (int i = 0; i<this.getMyCheckers().length;i++){
-			c = this.getMyCheckers()[i];
+		for (int i = 0; i<getMyCheckers().length;i++){
+			c = getMyCheckers()[i];
 			if(c.getPosition() == checker.getPosition()){
-				this.getMyCheckers()[i] = this.getMyCheckers()[this.getMyCheckers().length-1];
-				this.getMyCheckers()[this.getMyCheckers().length-1] = null;
+				getMyCheckers()[i] = getMyCheckers()[getMyCheckers().length-1];
+				getMyCheckers()[getMyCheckers().length-1] = null;
 			}
 		}
 	}
