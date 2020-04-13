@@ -1,4 +1,5 @@
 import java.util.Stack;
+
 public class Board {
 	private Checker[][] checkers = new Checker[8][8];
 	private Player white;
