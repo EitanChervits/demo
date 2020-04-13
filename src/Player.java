@@ -63,5 +63,21 @@ public class Player {
 			}
 		}
 	}
+	public void deleteAPiece(Checker checker){
+		Checker c = null;
+		for (int i = 0; i<this.getMyCheckers().length;i++){
+			c = this.getMyCheckers()[i];
+			if(c.getPosition() == checker.getPosition()){
+				this.getMyCheckers()[i] = this.getMyCheckers()[this.getMyCheckers().length-1];
+				this.getMyCheckers()[this.getMyCheckers().length-1] = null;
+			}
+		}
+	}
+
+	public void setCheckedFasle(){
+		for(Checker c:this.getMyCheckers()){
+			c.setChecked(false);
+		}
+	}
 
 }

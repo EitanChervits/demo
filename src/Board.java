@@ -155,20 +155,14 @@ public  int countTopLeftToBottomRight(Checker c){
 			list.goTO(5,counter);//bottom left
 
 	}
-	/*	0	1	2
-		3	cell 4
-		5	6	7
-	each number represents a direction */
- /*public void sendDirection(Checker checker){
-	 for (int i = 0; i <8 ; i++) {
-		whichCell(i,checker);
-	 }
 
- }*/
 //c is the cell in the area of the cell we are testing
+//the function receives a direction, and a checker and returns the checker in that specific direction
 	private Checker whichCell(int i, Checker checker) {
 	 int x = checker.getPosition().getX();
 	 int y = checker.getPosition().getY();
+	if(x-1<0||y-1<0||x+1>7||y+1>7)
+		return null;
 	 Checker c = null;
 	 switch (i){
 		 case 0:
@@ -220,56 +214,10 @@ public  int countTopLeftToBottomRight(Checker c){
 			}
 
 		}
+		player.setCheckedFasle();
 		return 	(contigPieces == player.getMyCheckers().length);
 	}
 
-	/* boolean piecesContiguous(Side player) {
-        boardTraverse += 1;
-        int numberPieces = 0;
-        BoardSpot firstSpot = null;
-        for (BoardSpot[] array: boardspots) {
-            for (BoardSpot spot: array) {
-                if (spot == null) {
-                    continue;
-                }
-                if (spot.getPiece().side() == player) {
-                    numberPieces += 1;
-                    if (firstSpot == null) {
-                        firstSpot = spot;
-                    }
-                }
-            }
-        }
-        int contigPieces = 0;
-        LinkedList<BoardSpot> stack = new LinkedList<BoardSpot>();
-        stack.push(firstSpot);
-        BoardSpot spot;
-        while (!stack.isEmpty()) {
-            contigPieces += 1;
-            spot = stack.poll();
-            spot.setTraverseNum(boardTraverse);
-            for (BoardSpot contigSpot: spot.getSpotArray()) {
-                if (contigSpot == null) {
-                    continue;
-                }
-                if (contigSpot.getPiece().side() == player
-                        && contigSpot.getTraverseNum() != boardTraverse) {
-                    contigSpot.setTraverseNum(boardTraverse);
-                    stack.push(contigSpot);
-                }
-            }
 
-        }
-        return (numberPieces == contigPieces);
-    }*/
-	public void deleteAPiece(Checker checker,Player player){
-		Checker c = null;
-		for (int i = 0; i<player.getMyCheckers().length;i++){
-			c = player.getMyCheckers()[i];
-			if(c.getPosition() == checker.getPosition()){
-				player.getMyCheckers()[i] = player.getMyCheckers()[player.getMyCheckers().length-1];
-				player.getMyCheckers()[player.getMyCheckers().length-1] = null;
-			}
-		}
-	}
+
 }
