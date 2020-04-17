@@ -44,17 +44,4 @@ public class Position {
 		}
 		return 1;
 	}
-//the function finds the cell that holds the position
-	public Checker findChecker(Checker[][] checkers) {
-		Checker checker = null;
-		for (Checker[] cArray : checkers) {
-			for (Checker c : cArray) {
-				if(c.getPosition()==this) {
-					checker = c;
-					break;
-				}
-			}
-		}
-		return checker;
-	}
 }

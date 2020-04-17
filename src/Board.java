@@ -24,12 +24,19 @@ public class Board {
 		return black;
 	}
 
-	public Checker getcellAt(Position p) {
+	public Checker getcheckerAt(Position p) {
 		return getcell()[p.getY()][p.getX()];
 	}
 
 	public int getTurn() {
 		return turn;
+	}
+	public void changeTurn(){
+		if(getTurn()==1)setTurn(2);
+		else setTurn(1);
+	}
+	public Player getPlayer(){
+		return getTurn()==1?white:black;
 	}
 
 	// setters
@@ -54,12 +61,10 @@ public class Board {
 			for (int j = 0; j < 8; j++) {
 				p.setX(i);
 				p.setY(j);
-				checkers[i][j].setPosition(p);// sets position for each cell
 				if ((i == 0 || i == 7) && (j != 0 && j != 7))
-					checkers[i][j].setColor(2);//sets all the black cells
+					checkers[i][j] = new Checker(2,p);//sets all the black cells
 				else if ((i != 0 && i != 7) && (j == 0 || j == 7))
-					checkers[i][j].setColor(1);//sets all the white cells
-				else checkers[i][j].setColor(0);//sets the empty cells
+					checkers[i][j] = new Checker(1,p);
 			}
 		}
 	}
@@ -222,27 +227,26 @@ public class Board {
 		player.setCheckedFasle();
 		return (contigPieces == player.getCheckersLength());
 	}
-//the function switches between the moving cell and the distention cell and clears the moving cell
-//	plus changes the position of the moving cell in the players' cells array
+	public void setCheckerAt(Checker checker,Position p){
+			if(getcheckerAt(p)!=null){
+				checkers[p.getX()][p.getY()] = new Checker(checker.getColor(),p);
+				checkers[checker.getPosition().getX()][checker.getPosition().getY()] = null;
+			}
+			else
+			{
+				checkers[p.getX()][p.getY()].setColor(checker.getColor());
+				checkers[checker.getPosition().getX()][checker.getPosition().getY()] = null;
+			}
+	}
+//the function switches between the moving checker and the distention cell and clears the moving cell
+//	plus changes the position of the moving checker in the players' checkers array
 	public void makeAMove(Checker checker,Position position){
-			Checker dist = position.findChecker(checkers);
-			dist.setColor(checker.getColor());
-			checker.setColor(0);
-			if (getTurn()==1) {
-				for (Checker c :white.getMyCheckers()){
+			setCheckerAt(checker,position);
+				for (Checker c :getPlayer().getMyCheckers()){
 					if (c==checker)
-						c.setPosition(dist.getPosition());
+						c.setPosition(position);
 				}
-				setTurn(2);
-			}
-			else if (getTurn()==2) {
-			for (Checker c :black.getMyCheckers()){
-				if (c==checker)
-					c.setPosition(dist.getPosition());
-
-			}
-				setTurn(1);
-			}
+				changeTurn();
 
 		}
 		//checks if each one of the players got all of his pieces in a sequence
