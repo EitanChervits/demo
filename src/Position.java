@@ -44,7 +44,7 @@ public class Position {
 		}
 		return 1;
 	}
-
+//the function finds the cell that holds the position
 	public Checker findChecker(Checker[][] checkers) {
 		Checker checker = null;
 		for (Checker[] cArray : checkers) {

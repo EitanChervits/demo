@@ -222,7 +222,8 @@ public class Board {
 		player.setCheckedFasle();
 		return (contigPieces == player.getCheckersLength());
 	}
-
+//the function switches between the moving cell and the distention cell and clears the moving cell
+//	plus changes the position of the moving cell in the players' cells array
 	public void makeAMove(Checker checker,Position position){
 			Checker dist = position.findChecker(checkers);
 			dist.setColor(checker.getColor());
@@ -232,13 +233,19 @@ public class Board {
 					if (c==checker)
 						c.setPosition(dist.getPosition());
 				}
-			}else if (getTurn()==2) {
+				setTurn(2);
+			}
+			else if (getTurn()==2) {
 			for (Checker c :black.getMyCheckers()){
 				if (c==checker)
 					c.setPosition(dist.getPosition());
+
 			}
+				setTurn(1);
+			}
+
 		}
-		}
+		//checks if each one of the players got all of his pieces in a sequence
 		public int GameOver(){
 		boolean whitePlayer = piecesContiguous(white);
 		boolean blackPlayer = piecesContiguous(black);
@@ -246,7 +253,7 @@ public class Board {
 				(getTurn()==1)?1:2
 				:1
 				:(blackPlayer==true)?2:0;
-	}
+	 }
 
 	}
 
