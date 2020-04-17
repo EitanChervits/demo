@@ -2,22 +2,16 @@
 public class Player {
 	private String name;
 	private int color;
-	private boolean turn;
 	private Checker [] myCheckers = new Checker[12];
 
 	public Player(int color, boolean turn) {
 		this.color = color;
-		this.turn = turn;
 	}
 
 	public Player(String name, int color) {
 		this.name = name;
 		this.color = color;
-		if (color == 1) {
-			setTurn(true);
-		} else {
-			setTurn(false);
-		}
+
 
 	}
 
@@ -30,9 +24,6 @@ public class Player {
 		this.color = color;
 	}
 
-	public void setTurn(boolean turn) {
-		this.turn = turn;
-	}
 
 	public void setMyCheckers(Checker[] myCheckers) {
 		this.myCheckers = myCheckers;
@@ -47,9 +38,6 @@ public class Player {
 		return color;
 	}
 
-	public boolean isTurn() {
-		return turn;
-	}
 
 	public Checker[] getMyCheckers() {
 		return myCheckers;
@@ -78,6 +66,9 @@ public class Player {
 		for(Checker c:this.getMyCheckers()){
 			c.setChecked(false);
 		}
+	}
+	public int getCheckersLength() {
+		return getMyCheckers().length;
 	}
 
 }

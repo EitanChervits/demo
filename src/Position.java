@@ -12,7 +12,7 @@ public class Position {
 		this.x = x;
 		this.y = y;
 	}
- 
+
 	public int getX() {
 		return this.x;
 	}
@@ -43,5 +43,18 @@ public class Position {
 			return 0;
 		}
 		return 1;
+	}
+
+	public Checker findChecker(Checker[][] checkers) {
+		Checker checker = null;
+		for (Checker[] cArray : checkers) {
+			for (Checker c : cArray) {
+				if(c.getPosition()==this) {
+					checker = c;
+					break;
+				}
+			}
+		}
+		return checker;
 	}
 }
