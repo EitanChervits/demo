@@ -10,8 +10,12 @@ public class Checker {
     }
 
     public Checker(Color color, int x,int y) {
-        this.position.setX(x);
-        this.position.setY(y);
+      this.position= new Position(x,y);
+        this.color = color;
+        this.checked = false;
+    }
+    public Checker(Color color, Position position) {
+        this.position = position;
         this.color = color;
         this.checked = false;
     }

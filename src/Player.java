@@ -43,11 +43,10 @@ public class Player {
         return myCheckers;
     }
 
-    public void addChecker(Position p) {
+    public void addChecker(Checker checker) {
         for (int i = 0; i < getMyCheckers().length; i++) {
             if (getMyCheckers()[i] == null) {
-                getMyCheckers()[i] = new Checker(this.getColor(), p);
-                return;
+                getMyCheckers()[i] = checker;
             }
         }
     }

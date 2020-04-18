@@ -76,9 +76,9 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (checkers[i][j].getColor() == Color.WHITE)
-                    white.getMyCheckers()[i] = checkers[i][j];
+                    white.addChecker(checkers[i][j]);
                 else if (checkers[i][j].getColor() == Color.BLACK)
-                    black.getMyCheckers()[i]=checkers[i][j];;
+                    black.addChecker(checkers[i][j]);
             }
         }
     }
