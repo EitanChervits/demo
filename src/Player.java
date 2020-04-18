@@ -4,7 +4,7 @@ public class Player {
     private Color color;
     private Checker [] myCheckers = new Checker[12];
 
-    public Player(Color color, boolean turn) {
+    public Player(Color color) {
         this.color = color;
     }
 
