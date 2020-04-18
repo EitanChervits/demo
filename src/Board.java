@@ -3,16 +3,17 @@ public class Board {
     private Checker[][] checkers = new Checker[8][8];
     private Player white;
     private Player black;
-    private int turn;
+    private Color turn;
 
     public Board() {
-        white = new Player(Color.WHITE, true);
-        black = new Player(Color.BLACK, false);
-
+        white = new Player(Color.WHITE);
+        black = new Player(Color.BLACK);
+        turn = Color.WHITE;
+        setInitCheckers();
     }
 
     // getters
-    public Checker[][] getcell() {
+    public Checker[][] getCheckers() {
         return checkers;
     }
 
@@ -24,19 +25,18 @@ public class Board {
         return black;
     }
 
-    public Checker getcheckerAt(Position p) {
-        return getcell()[p.getY()][p.getX()];
+    public Checker getCheckerAt(Position p) {
+        return getCheckers()[p.getX()][p.getY()];
     }
 
-    public int getTurn() {
+    public Color getTurn() {
         return turn;
     }
     public void changeTurn(){
-        if(getTurn()==1)setTurn(2);
-        else setTurn(1);
+        turn = turn.opponent();
     }
-    public Player getPlayer(){
-        return getTurn()==1?white:black;
+    public Player getCurrentPlayer(){
+        return getTurn() == Color.WHITE ? getWhitePlayer() : getBlackPlayer();
     }
 
     // setters
@@ -51,11 +51,16 @@ public class Board {
     public void setBlackPlayer(Player p) {
         black = p;
     }
-    public void setTurn(int turn) {
+
+    public void setTurn(Color turn) {
         this.turn = turn;
     }
+
     /*the function generates position and color for all the cells on the board;*/
-    public void setCheckers() {
+    public void setInitCheckers() {
+        // I want you to do this fix by yourself - pay attention to that: you create only
+        // one new instance of Position and keep changing it's fields, which means all checkers
+        // will have the same position by the end.
         Position p = new Position();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -192,20 +197,20 @@ public class Board {
 
         return (i == 0 && notTopBrdr && notLftBrdr) ? checkers[x - 1][y - 1] :
                 (i == 1 && notTopBrdr) ? checkers[x - 1][y] :
-                        (i == 2 && notTopBrdr && notRgtBrdr) ? checkers[x - 1][y + 1] :
-                                (i == 3 && notLftBrdr) ? checkers[x][y - 1] :
-                                        (i == 4 && notRgtBrdr) ? checkers[x][y + 1] :
-                                                (i == 5 && notBtmBrdr && notLftBrdr) ? checkers[x + 1][y - 1] :
-                                                        (i == 6 && notBtmBrdr) ? checkers[x + 1][y] :
-                                                                (i == 7 && notBtmBrdr && notRgtBrdr) ? checkers[x + 1][y + 1] :
-                                                                        null;
+                (i == 2 && notTopBrdr && notRgtBrdr) ? checkers[x - 1][y + 1] :
+                (i == 3 && notLftBrdr) ? checkers[x][y - 1] :
+                (i == 4 && notRgtBrdr) ? checkers[x][y + 1] :
+                (i == 5 && notBtmBrdr && notLftBrdr) ? checkers[x + 1][y - 1] :
+                (i == 6 && notBtmBrdr) ? checkers[x + 1][y] :
+                (i == 7 && notBtmBrdr && notRgtBrdr) ? checkers[x + 1][y + 1] :
+                null;
     }
 
     //this method checks if all the pieces of a player are continues
     //by placing each
     public boolean piecesContiguous(Player player) {
         int contigPieces = 0;
-        Stack<Checker> stack = new Stack<Checker>();
+        Stack<Checker> stack = new Stack<>();
         Checker firstSpot = player.getMyCheckers()[0];
         stack.push(firstSpot);
         firstSpot.setChecked(true);
@@ -237,7 +242,7 @@ public class Board {
 //	plus changes the position of the moving checker in the players' checkers array
     public void makeAMove(Checker checker,Position position){
         setCheckerAt(checker,position);
-        for (Checker c :getPlayer().getMyCheckers()){
+        for (Checker c : getCurrentPlayer().getMyCheckers()){
             if (c==checker)
                 c.setPosition(position);
         }
@@ -245,13 +250,13 @@ public class Board {
 
     }
     //checks if each one of the players got all of his pieces in a sequence
-    public int GameOver(){
+    public Color GameOver(){
         boolean whitePlayer = piecesContiguous(white);
         boolean blackPlayer = piecesContiguous(black);
-        return (whitePlayer==true)?(blackPlayer==true)?
-                (getTurn()==1)?1:2
-                :1
-                :(blackPlayer==true)?2:0;
+        return (whitePlayer)?(blackPlayer)?
+                (getTurn()==Color.WHITE) ? Color.WHITE : Color.BLACK
+                : Color.WHITE
+                : blackPlayer ? Color.BLACK: null;
     }
 
 }
