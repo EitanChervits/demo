@@ -6,8 +6,8 @@ public class Board {
 	private int turn;
 
 	public Board() {
-		white = new Player(1, true);
-		black = new Player(2, false);
+		white = new Player(Color.WHITE, true);
+		black = new Player(Color.BLACK, false);
 
 	}
 
@@ -62,9 +62,9 @@ public class Board {
 				p.setX(i);
 				p.setY(j);
 				if ((i == 0 || i == 7) && (j != 0 && j != 7))
-					checkers[i][j] = new Checker(2,p);//sets all the black cells
+					checkers[i][j] = new Checker(Color.BLACK,p);//sets all the black cells
 				else if ((i != 0 && i != 7) && (j == 0 || j == 7))
-					checkers[i][j] = new Checker(1,p);
+					checkers[i][j] = new Checker(Color.WHITE,p);
 			}
 		}
 	}
@@ -72,9 +72,9 @@ public class Board {
 	public void setPlayersCheckers() {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				if (checkers[i][j].getColor() == 1)
+				if (checkers[i][j].getColor() == Color.WHITE)
 					white.getMyCheckers()[i].setPosition(checkers[i][j].getPosition());
-				else if (checkers[i][j].getColor() == 2)
+				else if (checkers[i][j].getColor() == Color.BLACK)
 					black.getMyCheckers()[i].setPosition(checkers[i][j].getPosition());
 			}
 		}
@@ -86,7 +86,7 @@ public class Board {
 		int counter = 0;
 		// number of checkers in up and down direction
 		for (int i = 0; i < 8; i++) {
-			if (checkers[i][y].getColor() != 0)
+			if (checkers[i][y]!= null)
 				counter++;
 		}
 		return counter;
@@ -97,7 +97,7 @@ public class Board {
 		int y = c.getPosition().getY();
 		int counter = 0;
 		for (int i = counter = 0; i < 8; i++) {
-			if (checkers[x][i].getColor() != 0)
+			if (checkers[x][i] != null)
 				counter++;
 		}
 		return counter;
@@ -109,12 +109,12 @@ public class Board {
 		int counter = 0;
 		if (x >= y) {
 			for (int i = x - y, j = counter = 0; i < 8; j++, i++) {
-				if (checkers[i][j].getColor() != 0)
+				if (checkers[i][j]!= null)
 					counter++;
 			}
 		} else if (y > x) {
 			for (int i = counter = 0, j = y - x; j < 8; j++, i++) {
-				if (checkers[i][j].getColor() != 0)
+				if (checkers[i][j]!= null)
 					counter++;
 			}
 		}
@@ -127,12 +127,12 @@ public class Board {
 		int counter = 0;
 		if (x + y <= 7) {
 			for (int i = 0, j = x + y; i <= x + y; i++, j--) {
-				if (checkers[i][j].getColor() != 0)
+				if (checkers[i][j]!= null)
 					counter++;
 			}
 		} else if (x + y > 7) {
 			for (int i = 7 - y, j = 7; i <= 7; i++, j--) {
-				if (checkers[i][j].getColor() != 0)
+				if (checkers[i][j]!= null)
 					counter++;
 			}
 		}
@@ -228,15 +228,10 @@ public class Board {
 		return (contigPieces == player.getCheckersLength());
 	}
 	public void setCheckerAt(Checker checker,Position p){
-			if(getcheckerAt(p)!=null){
-				checkers[p.getX()][p.getY()] = new Checker(checker.getColor(),p);
-				checkers[checker.getPosition().getX()][checker.getPosition().getY()] = null;
-			}
-			else
-			{
-				checkers[p.getX()][p.getY()].setColor(checker.getColor());
-				checkers[checker.getPosition().getX()][checker.getPosition().getY()] = null;
-			}
+		checkers[p.getX()][p.getY()] = checker;
+		checkers[checker.getPosition().getX()][checker.getPosition().getY()] = null;
+		checker.setPosition(p);
+
 	}
 //the function switches between the moving checker and the distention cell and clears the moving cell
 //	plus changes the position of the moving checker in the players' checkers array

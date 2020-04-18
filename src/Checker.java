@@ -2,21 +2,21 @@
 
 public class Checker {
 	private Position position;
-	private int color;
+	private Color color;
 	private int touch;
 	private boolean checked;
 	public Checker() {
 
 	}
 
-	public Checker(int color, Position position) {
+	public Checker(Color color, Position position) {
 		this.position = position;
 		this.color = color;
 		this.checked = false;
 	}
 
 	// getters
-	public int getColor() {
+	public Color getColor() {
 		return color;
 	}
 
@@ -33,7 +33,7 @@ public class Checker {
 		position = p;
 	}
 
-	public void setColor(int c) {
+	public void setColor(Color c) {
 		color = c;
 	}
 

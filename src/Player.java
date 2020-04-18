@@ -1,14 +1,14 @@
 
 public class Player {
 	private String name;
-	private int color;
+	private Color color;
 	private Checker [] myCheckers = new Checker[12];
 
-	public Player(int color, boolean turn) {
+	public Player(Color color, boolean turn) {
 		this.color = color;
 	}
 
-	public Player(String name, int color) {
+	public Player(String name, Color color) {
 		this.name = name;
 		this.color = color;
 
@@ -20,7 +20,7 @@ public class Player {
 		this.name = name;
 	}
  
-	public void setColor(int color) {
+	public void setColor(Color color) {
 		this.color = color;
 	}
 
@@ -34,7 +34,7 @@ public class Player {
 		return name;
 	}
 
-	public int getColor() {
+	public Color getColor() {
 		return color;
 	}
 
