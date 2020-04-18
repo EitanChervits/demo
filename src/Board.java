@@ -61,15 +61,13 @@ public class Board {
         // I want you to do this fix by yourself - pay attention to that: you create only
         // one new instance of Position and keep changing it's fields, which means all checkers
         // will have the same position by the end.
-        Position p = new Position();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                p.setX(i);
-                p.setY(j);
+
                 if ((i == 0 || i == 7) && (j != 0 && j != 7))
-                    checkers[i][j] = new Checker(Color.BLACK,p);//sets all the black cells
+                    checkers[i][j] = new Checker(Color.BLACK,i,j);//sets all the black cells
                 else if ((i != 0 && i != 7) && (j == 0 || j == 7))
-                    checkers[i][j] = new Checker(Color.WHITE,p);
+                    checkers[i][j] = new Checker(Color.WHITE,i,j);
             }
         }
     }
@@ -78,9 +76,9 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (checkers[i][j].getColor() == Color.WHITE)
-                    white.getMyCheckers()[i].setPosition(checkers[i][j].getPosition());
+                    white.getMyCheckers()[i] = checkers[i][j];
                 else if (checkers[i][j].getColor() == Color.BLACK)
-                    black.getMyCheckers()[i].setPosition(checkers[i][j].getPosition());
+                    black.getMyCheckers()[i]=checkers[i][j];;
             }
         }
     }
