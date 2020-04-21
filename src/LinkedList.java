@@ -1,12 +1,12 @@
 public class LinkedList {
-    private class Node{
+    public class Node{
         private int direction;
-        private int cells;
+        private int numOfCheckers;
         private Node next;
 
-        public Node(int direction, int cells){
+        public Node(int direction, int numOfCheckers){
             this.direction=direction;
-            this.cells=cells;
+            this.numOfCheckers=numOfCheckers;
         }
 
         public int getDirection() {
@@ -17,19 +17,19 @@ public class LinkedList {
             this.direction = direction;
         }
 
-        public int getCells() {
-            return cells;
+        public int getnumOfCheckers() {
+            return numOfCheckers;
         }
 
-        public void setCells(int cells) {
-            this.cells = cells;
+        public void setnumOfCheckers(int numOfCheckers) {
+            this.numOfCheckers = numOfCheckers;
         }
     }
     int size;
     Node head;
-    public void add(int direction, int cells) {
+    public void add(int direction, int numOfCheckers) {
         Node curr=head;
-        Node newNode=new Node(direction, cells);
+        Node newNode=new Node(direction, numOfCheckers);
         if(head==null){
             head=newNode;
             newNode.next=head;
@@ -47,7 +47,7 @@ public class LinkedList {
         Node curr=head;
         while(curr.next!=head){
             curr.setDirection(0);
-            curr.setCells(0);
+            curr.setnumOfCheckers(0);
             curr = curr.next;
         }
     }
@@ -56,7 +56,7 @@ public class LinkedList {
         for (int i = 0; i <=direction ; i++) {
             curr = curr.next;
         }
-        curr.setCells(counter);
+        curr.setnumOfCheckers(counter);
     }
 
 }

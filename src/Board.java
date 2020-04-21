@@ -11,6 +11,13 @@ public class Board {
         turn = Color.WHITE;
         setInitCheckers();
     }
+    public Board(Board copy) {
+        this.white = copy.white;
+        this.black = copy.black;
+        this.turn = copy.getTurn();
+        this.checkers = copy.checkers;
+        setInitCheckers();
+    }
 
     // getters
     public Checker[][] getCheckers() {
@@ -35,6 +42,8 @@ public class Board {
     public void changeTurn(){
         turn = turn.opponent();
     }
+    public Player getPlayerByColor(Color color){return color==Color.WHITE?white:black;}
+    public Player getOpponetn(Color color){return color==Color.WHITE?black:white;}
     public Player getCurrentPlayer(){
         return getTurn() == Color.WHITE ? getWhitePlayer() : getBlackPlayer();
     }
@@ -180,6 +189,37 @@ public class Board {
             list.goTO(5, counter);//bottom left
 
         return list;
+
+    }
+   public Position getPositionInDirection(Checker c, int i, LinkedList.Node node){
+        Checker checker = null;
+        switch (i){
+            case 0:
+                checker = checkers[c.getPosition().getX()][c.getPosition().getY()-node.getnumOfCheckers()];
+                break;
+            case 1:
+                checker = checkers[c.getPosition().getX()-node.getnumOfCheckers()][c.getPosition().getY()+node.getnumOfCheckers()];
+                break;
+            case 2:
+                checker = checkers[c.getPosition().getX()][c.getPosition().getY()+node.getnumOfCheckers()];
+                break;
+            case 3:
+                checker = checkers[c.getPosition().getX()+node.getnumOfCheckers()][c.getPosition().getY()+node.getnumOfCheckers()];
+                break;
+            case 4:
+                checker = checkers[c.getPosition().getX()+node.getnumOfCheckers()][c.getPosition().getY()];
+                break;
+            case 5:
+                checker = checkers[c.getPosition().getX()+node.getnumOfCheckers()][c.getPosition().getY()-node.getnumOfCheckers()];
+                break;
+            case 6:
+                checker = checkers[c.getPosition().getX()][c.getPosition().getY()-node.getnumOfCheckers()];
+                break;
+            case 7:
+                checker = checkers[c.getPosition().getX()-node.getnumOfCheckers()][c.getPosition().getY()-node.getnumOfCheckers()];
+                break;
+        }
+        if(checker==null)
 
     }
 
