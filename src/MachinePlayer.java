@@ -53,29 +53,67 @@ public class MachinePlayer extends Player{
         }
         return sum;
     }
-  public Position minmax(Color Color, int depth, int alpha, int beta) {
+    public Position minmax(Color Color, int depth, int alpha, int beta) {
         Position best = null;
         int bestmove = Integer.MIN_VALUE;
         int current = Integer.MIN_VALUE;
-        ArrayList<LinkedList> list = new ArrayList<LinkedList>() ;
-      for (Checker[] checkerArray: board.getCheckers()) {
-          for (Checker c: checkerArray) {
-              if (c!=null)
-                  list.add(board.canGo(c));
-          }
-          }
-        while (!list.isEmpty()) {
-            Move next = iter.next();
-            copy.makeMove(next);
-            current =
-                    alphabeta(side.opponent(), copy, alpha, beta, depth - 1);
-            if (current > bestmove) {
-                best = next;
-                bestmove = current;
+        ArrayList<Position> list=null;
+        Game gameCopy = new Game(board,color);
+        for (Checker c: board.getPlayerByColor(color).getMyCheckers()) {
+            int index = 0;
+            if (c != null)
+                list = board.canGo(c);
+            while (!list.isEmpty()) {
+                gameCopy.makeAMove(c,list.get(index));
+                current =
+                        alphabeta(color, gameCopy, alpha, beta, depth - 1);
+                if (current > bestmove) {
+                    best = list.get(index);
+                    bestmove = current;
+                }
+                gameCopy.retract(board);
+                index++;
             }
-            copy.retract();
         }
         return best;
+    }
+    int alphabeta(Color color, Game game, int alpha, int beta, int depth) {
+        if (game.GameOver()!=null || depth <= 0) {
+            return eval(board);
+        }
+        int score;
+        Board copy = new Board(game.getcontents(), game.getplayer());
+        Iterator<Move> iter = copy.legalMoves();
+        ArrayList<Board> state = new ArrayList<Board>();
+        while (iter.hasNext()) {
+            copy.makeMove(iter.next());
+            state.add(copy);
+            copy.retract();
+        }
+        if (game.getplayer() == side()) {
+            for (Board b : state) {
+                score = alphabeta(side().opponent(), b, alpha, beta, depth - 1);
+                if (score > alpha) {
+                    alpha = score;
+                }
+                if (alpha >= beta) {
+                    return alpha;
+                }
+            }
+            return alpha;
+        } else {
+            for (Board b : state) {
+                score =
+                        alphabeta(side().opponent(), b, alpha, beta, depth - 1);
+                if (score < beta) {
+                    beta = score;
+                }
+                if (alpha >= beta) {
+                    return beta;
+                }
+            }
+            return beta;
+        }
     }
 
 }

@@ -1,5 +1,6 @@
+import java.util.ArrayList;
 import java.util.Stack;
-public class Board {
+ public class Board {
     private Checker[][] checkers = new Checker[8][8];
     private Player white;
     private Player black;
@@ -151,77 +152,66 @@ public class Board {
         return counter;
     }
 
-    public LinkedList canGo(Checker c) {
+    public ArrayList<Position> canGo(Checker c) {
         int x = c.getPosition().getX();
         int y = c.getPosition().getY();
         int counter = countUpDown(c);
-        LinkedList list = new LinkedList();// the list will contain the number of cells the player can go in each direction
-        for (int i = 0; i < 8; i++) {
-            list.add(i, 0);
-        }
+       ArrayList<Position> list= new ArrayList<Position>();
+
         //can go up and down
 		/* 7	0	1
 		   6	cell 2
 		   5     4    3
 		 */
-        if (x + counter < 8 && checkers[x + counter][y].getColor() != c.getColor())
-            list.goTO(4, counter);
+        if (x + counter < 8 && checkers[x + counter][y].getColor() != c.getColor()){
+            Position position = new Position(x+counter,y);
+            list.add(position);
+        }
         ;//the cell can go in that direction(down)
-        if (x - counter >= 0 && checkers[x - counter][y].getColor() != c.getColor())
-            list.goTO(0, counter);//the cell can go in that direction(up)
-        // number of checkers in left and right direction
+        if (x - counter >= 0 && checkers[x - counter][y].getColor() != c.getColor()){
+            Position position = new Position(x-counter,y+counter);
+            list.add(position);
+        }
         counter = countLeftRight(c);
-        if (y + counter < 8 && checkers[x][y + counter].getColor() != c.getColor())
-            list.goTO(2, counter);//the cell can go in that direction(right)
-        if (y - counter >= 0 && checkers[x][y - counter].getColor() != c.getColor())
-            list.goTO(6, counter);//the cell can go in that direction(left)
+        if (y + counter < 8 && checkers[x][y + counter].getColor() != c.getColor()){
+            Position position = new Position(x,y+counter);
+            list.add(position);
+        }
+
+        if (y - counter >= 0 && checkers[x][y - counter].getColor() != c.getColor()){
+            Position position = new Position(x,y-counter);
+            list.add(position);
+        }
+            //the cell can go in that direction(left)
         //from up left to bottom right
         counter = countTopLeftToBottomRight(c);
-        if (y + counter < 8 && x + counter < 8 && checkers[x + counter][y + counter].getColor() != c.getColor())
-            list.goTO(3, counter);//bottom right
-        if (y - counter < 8 && x - counter < 8 && checkers[x - counter][y - counter].getColor() != c.getColor())
-            list.goTO(7, counter);//bottom right
+        if (y + counter < 8 && x + counter < 8 && checkers[x + counter][y + counter].getColor() != c.getColor()){
+            Position position = new Position(x+counter,y+counter);
+            list.add(position);
+        }
+            //bottom right
+        if (y - counter < 8 && x - counter < 8 && checkers[x - counter][y - counter].getColor() != c.getColor()){
+            Position position = new Position(x-counter,y-counter);
+            list.add(position);
+        }
+            //bottom right
         //from up right to bottom left
         counter = countTopRightToBottomLeft(c);
-        if (y + counter < 8 && x - counter < 8 && checkers[x - counter][y + counter].getColor() != c.getColor())
-            list.goTO(1, counter);//top right
-        if (y - counter < 8 && x + counter < 8 && checkers[x + counter][y - counter].getColor() != c.getColor())
-            list.goTO(5, counter);//bottom left
+        if (y + counter < 8 && x - counter < 8 && checkers[x - counter][y + counter].getColor() != c.getColor()){
+            Position position = new Position(x-counter,y+counter);
+            list.add(position);
+        }
+            //top right
+        if (y - counter < 8 && x + counter < 8 && checkers[x + counter][y - counter].getColor() != c.getColor()){
+            Position position = new Position(x+counter,y-counter);
+            list.add(position);
+        }
+            //bottom left
 
         return list;
 
     }
-   public Position getPositionInDirection(Checker c, int i, LinkedList.Node node){
-        Checker checker = null;
-        switch (i){
-            case 0:
-                checker = checkers[c.getPosition().getX()][c.getPosition().getY()-node.getnumOfCheckers()];
-                break;
-            case 1:
-                checker = checkers[c.getPosition().getX()-node.getnumOfCheckers()][c.getPosition().getY()+node.getnumOfCheckers()];
-                break;
-            case 2:
-                checker = checkers[c.getPosition().getX()][c.getPosition().getY()+node.getnumOfCheckers()];
-                break;
-            case 3:
-                checker = checkers[c.getPosition().getX()+node.getnumOfCheckers()][c.getPosition().getY()+node.getnumOfCheckers()];
-                break;
-            case 4:
-                checker = checkers[c.getPosition().getX()+node.getnumOfCheckers()][c.getPosition().getY()];
-                break;
-            case 5:
-                checker = checkers[c.getPosition().getX()+node.getnumOfCheckers()][c.getPosition().getY()-node.getnumOfCheckers()];
-                break;
-            case 6:
-                checker = checkers[c.getPosition().getX()][c.getPosition().getY()-node.getnumOfCheckers()];
-                break;
-            case 7:
-                checker = checkers[c.getPosition().getX()-node.getnumOfCheckers()][c.getPosition().getY()-node.getnumOfCheckers()];
-                break;
-        }
-        if(checker==null)
 
-    }
 
     //c is the cell in the area of the cell we are testing
 //the function receives a direction, and a checker and returns the checker in that specific
@@ -246,7 +236,7 @@ public class Board {
 
     //this method checks if all the pieces of a player are continues
     //by placing each
-    public boolean piecesContiguous(Player player) {
+    protected boolean piecesContiguous(Player player) {
         int contigPieces = 0;
         Stack<Checker> stack = new Stack<>();
         Checker firstSpot = player.getMyCheckers()[0];
@@ -270,7 +260,7 @@ public class Board {
         player.setCheckedFasle();
         return (contigPieces == player.getCheckersLength());
     }
-    public void setCheckerAt(Checker checker,Position p){
+    protected void setCheckerAt(Checker checker,Position p){
         checkers[p.getX()][p.getY()] = checker;
         checkers[checker.getPosition().getX()][checker.getPosition().getY()] = null;
         checker.setPosition(p);
@@ -278,7 +268,7 @@ public class Board {
     }
     //the function switches between the moving checker and the distention cell and clears the moving cell
 //	plus changes the position of the moving checker in the players' checkers array
-    public void makeAMove(Checker checker,Position position){
+    protected void makeAMove(Checker checker,Position position){
         setCheckerAt(checker,position);
         for (Checker c : getCurrentPlayer().getMyCheckers()){
             if (c==checker)
@@ -288,7 +278,7 @@ public class Board {
 
     }
     //checks if each one of the players got all of his pieces in a sequence
-    public Color GameOver(){
+   protected  Color GameOver(){
         boolean whitePlayer = piecesContiguous(white);
         boolean blackPlayer = piecesContiguous(black);
         return (whitePlayer)?(blackPlayer)?
