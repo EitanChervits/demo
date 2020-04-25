@@ -18,12 +18,33 @@ public class GameWindow {
         frame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
-        frame.add(new JLabel("Hello world"), gbc);
-        frame.add(new JLabel("I'm on top"), gbc);
-        frame.add(new JButton("Clickity-clackity"), gbc);
+        frame.add(getButton("PlayBTNpressed.png", "PlayBTNnotpressed.png", 202, 91), gbc);
+        frame.add(getButton("RestartBTNpressed.png", "RestartBTNnotpressed.png", 202, 91), gbc);
+        frame.add(getButton("PauseBTNpressed.png", "PauseBTNnotpressed.png", 202, 91), gbc);
+        frame.add(getButton("MainMenuBTNpressed.png", "MainMenuBTNnotpressed.png", 202, 91), gbc);
         frame.setSize(1200,1200);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    private static JButton getButton(String pressedFile, String notPressedFile, int width, int height) {
+        JButton btn = new JButton();
+        ImageIcon pressedIcon = getResizedIcon(pressedFile, width, height);
+        ImageIcon playNotPressed = getResizedIcon(notPressedFile, width, height);
+        btn.setIcon(playNotPressed);
+        btn.setRolloverIcon(pressedIcon);
+        btn.setPressedIcon(pressedIcon);
+        btn.setPreferredSize(new Dimension(width, height));
+        btn.setOpaque(false);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false);
+        return btn;
+    }
+
+    private static ImageIcon getResizedIcon(String filename, int width, int height) {
+        Image toResize = new ImageIcon("resources/" + filename).getImage();
+        Image resized = toResize.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(resized);
     }
 }
