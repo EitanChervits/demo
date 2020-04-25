@@ -77,7 +77,11 @@ public class MachinePlayer extends Player{
         }
         return best;
     }
+
     int alphabeta(Color color, Game game, int alpha, int beta, int depth) {
+        return 0;
+    }
+/*    int alphabeta(Color color, Game game, int alpha, int beta, int depth) {
         if (game.GameOver()!=null || depth <= 0) {
             return eval(board);
         }
@@ -114,6 +118,6 @@ public class MachinePlayer extends Player{
             }
             return beta;
         }
-    }
+    }*/
 
 }

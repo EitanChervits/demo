@@ -15,13 +15,25 @@ public class GameWindow {
         JFrame frame = new JFrame("Lines Of Action");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(background);
-        frame.setLayout(new GridBagLayout());
+        frame.setLayout(new BorderLayout());
+
+        JPanel top = new JPanel();
+        top.setOpaque(false);
+        top.setPreferredSize(new Dimension(1200, 150));
+        JPanel menu = new JPanel();
+        menu.setOpaque(false);
+        menu.setPreferredSize(new Dimension(320, 1200));
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
-        frame.add(getButton("PlayBTNpressed.png", "PlayBTNnotpressed.png", 202, 91), gbc);
-        frame.add(getButton("RestartBTNpressed.png", "RestartBTNnotpressed.png", 202, 91), gbc);
-        frame.add(getButton("PauseBTNpressed.png", "PauseBTNnotpressed.png", 202, 91), gbc);
-        frame.add(getButton("MainMenuBTNpressed.png", "MainMenuBTNnotpressed.png", 202, 91), gbc);
+        menu.add(getButton("PlayBTNpressed.png", "PlayBTNnotpressed.png", 202, 91), gbc);
+        menu.add(getButton("RestartBTNpressed.png", "RestartBTNnotpressed.png", 202, 91), gbc);
+        menu.add(getButton("PauseBTNpressed.png", "PauseBTNnotpressed.png", 202, 91), gbc);
+        menu.add(getButton("MainMenuBTNpressed.png", "MainMenuBTNnotpressed.png", 202, 91), gbc);
+
+        frame.add(top, BorderLayout.PAGE_START);
+        frame.add(menu, BorderLayout.LINE_START);
+
         frame.setSize(1200,1200);
         frame.pack();
         frame.setLocationRelativeTo(null);
