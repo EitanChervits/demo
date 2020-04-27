@@ -21,8 +21,8 @@ public class MachinePlayer extends Player {
         if (game.piecesContiguous(board.getopponent(color))) {
             return Integer.MIN_VALUE;//returns the value of -infinity
         }
-        ArrayList<Position> human = board.getPlayerByColor(color).getPlayerCheckersPossitions();
-        ArrayList<Position> computer = board.getopponent(color).getPlayerCheckersPossitions();
+        ArrayList<Position> human = board.getPlayerByColor(color).getPlayerCheckersPositions();
+        ArrayList<Position> computer = board.getopponent(color).getPlayerCheckersPositions();
         int comp = distance(computer);
         int hum = distance(human);
         return hum - comp;

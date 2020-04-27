@@ -257,7 +257,7 @@ import java.util.Stack;
                 }
             }
         }
-        player.setCheckedFasle();
+        player.setCheckedFalse();
         return (contigPieces == player.getCheckersLength());
     }
     protected void setCheckerAt(Checker checker,Position p){
