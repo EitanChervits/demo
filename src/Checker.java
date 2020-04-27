@@ -3,7 +3,6 @@
 public class Checker {
     private Position position;
     private Color color;
-    private int touch;
     private boolean checked;
     public Checker() {
 
@@ -50,8 +49,8 @@ public class Checker {
         return getColor() + "---"
                 /* + "\nIt's Position on Board : " + getPosition().draw() */;
     }
-    //tells if a cell is a border cell
-    public boolean cellIsBorder(){
+    //tells if a checker is a border cell
+    public boolean checkerIsBorder(){
         if(position.getX()==0||position.getY()==0||position.getX()==7||position.getY()==7)
             return true;
         return false;

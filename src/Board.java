@@ -44,7 +44,7 @@ import java.util.Stack;
         turn = turn.opponent();
     }
     public Player getPlayerByColor(Color color){return color==Color.WHITE?white:black;}
-    public Player getOpponetn(Color color){return color==Color.WHITE?black:white;}
+    public Player getopponent(Color color){return color==Color.WHITE?black:white;}
     public Player getCurrentPlayer(){
         return getTurn() == Color.WHITE ? getWhitePlayer() : getBlackPlayer();
     }
