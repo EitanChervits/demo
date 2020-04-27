@@ -34,7 +34,7 @@ public class GameWindow {
         frame.add(top, BorderLayout.PAGE_START);
         frame.add(menu, BorderLayout.LINE_START);
 
-        frame.setSize(1200,1200);
+        frame.setSize(1066,854);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
