@@ -53,7 +53,7 @@ public class Player {
         }
     }
     public void deleteAPiece(Checker checker){
-        Checker c = null;
+        Checker c;
         for (int i = 0; i<getMyCheckers().length;i++){
             c = getMyCheckers()[i];
             if(c.getPosition() == checker.getPosition()){
@@ -63,7 +63,7 @@ public class Player {
         }
     }
 
-    public void setCheckedFasle(){
+    public void setCheckedFalse(){
         for(Checker c:this.getMyCheckers()){
             c.setChecked(false);
         }
@@ -71,7 +71,7 @@ public class Player {
     public int getCheckersLength() {
         return getMyCheckers().length;
     }
-    public ArrayList<Position> getPlayerCheckersPossitions() {
+    public ArrayList<Position> getPlayerCheckersPositions() {
         ArrayList<Position> positions = new ArrayList<>();
         for (Checker c:myCheckers ){
             positions.add(c.getPosition());
