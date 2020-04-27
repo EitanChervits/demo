@@ -1,8 +1,10 @@
+import javax.swing.*;
+import java.util.ArrayList;
 
 public class Player {
     private String name;
-    private Color color;
-    private Checker [] myCheckers = new Checker[12];
+    protected Color color;
+    protected Checker [] myCheckers = new Checker[12];
 
     public Player(Color color) {
         this.color = color;
@@ -69,5 +71,15 @@ public class Player {
     public int getCheckersLength() {
         return getMyCheckers().length;
     }
-
+    public ArrayList<Position> getPlayerCheckersPossitions() {
+        ArrayList<Position> positions = new ArrayList<>();
+        for (Checker c:myCheckers ){
+            positions.add(c.getPosition());
+        }
+        return positions;
+    }
+    public Move makeMove(Board board){
+        MachinePlayer machinePlayer = new MachinePlayer(color,board);
+        return machinePlayer.minmax(color,3,Integer.MAX_VALUE,Integer.MIN_VALUE);
+    }
 }
