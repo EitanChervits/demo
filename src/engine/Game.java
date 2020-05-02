@@ -1,3 +1,5 @@
+package engine;
+
 public class Game extends Board {
     private Checker[][] checkers = new Checker[8][8];
     private Color turn;

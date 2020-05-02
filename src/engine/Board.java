@@ -1,3 +1,5 @@
+package engine;
+
 import java.util.ArrayList;
 import java.util.Stack;
  public class Board {
@@ -69,7 +71,7 @@ import java.util.Stack;
     /*the function generates position and color for all the cells on the board;*/
     public void setInitCheckers() {
         // I want you to do this fix by yourself - pay attention to that: you create only
-        // one new instance of Position and keep changing it's fields, which means all checkers
+        // one new instance of engine.Position and keep changing it's fields, which means all checkers
         // will have the same position by the end.
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {

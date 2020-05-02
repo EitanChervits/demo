@@ -1,4 +1,4 @@
-
+package engine;
 
 public class Checker {
     private Position position;
@@ -47,7 +47,7 @@ public class Checker {
 
     public String toString() {
         return getColor() + "---"
-                /* + "\nIt's Position on Board : " + getPosition().draw() */;
+                /* + "\nIt's engine.Position on engine.Board : " + getPosition().draw() */;
     }
     //tells if a checker is a border cell
     public boolean checkerIsBorder(){

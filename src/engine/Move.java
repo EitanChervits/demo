@@ -1,3 +1,5 @@
+package engine;
+
 public class Move {
     private Checker checker;
     private Position position;

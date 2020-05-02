@@ -32,7 +32,7 @@ public class ImagePanel extends JPanel {
     @Override
     public Dimension getPreferredSize() {
         //return img == null ? new Dimension(200, 200) : new Dimension(img.getWidth(this), img.getHeight(this));
-        return img == null ? new Dimension(200, 200) : new Dimension(1066, 854);
+        return img == null ? new Dimension(200, 200) : new Dimension(1117, 696);
     }
 
     @Override

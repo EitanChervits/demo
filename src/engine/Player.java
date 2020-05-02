@@ -1,4 +1,5 @@
-import javax.swing.*;
+package engine;
+
 import java.util.ArrayList;
 
 public class Player {
@@ -80,6 +81,6 @@ public class Player {
     }
     public Move makeMove(Board board){
         MachinePlayer machinePlayer = new MachinePlayer(color,board);
-        return machinePlayer.minmax(color,3,Integer.MAX_VALUE,Integer.MIN_VALUE);
+        return machinePlayer.minmax(3,Integer.MAX_VALUE,Integer.MIN_VALUE);
     }
 }
