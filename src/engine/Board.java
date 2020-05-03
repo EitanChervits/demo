@@ -3,7 +3,7 @@ package engine;
 import java.util.ArrayList;
 import java.util.Stack;
  public class Board {
-    private Checker[][] checkers = new Checker[8][8];
+    private Checker[][] checkers;
     private Player white;
     private Player black;
     private Color turn;
@@ -12,14 +12,22 @@ import java.util.Stack;
         white = new Player(Color.WHITE);
         black = new Player(Color.BLACK);
         turn = Color.WHITE;
+        checkers = new Checker[8][8];
         setInitCheckers();
+        setPlayersCheckers();
     }
     public Board(Board copy) {
-        this.white = copy.white;
-        this.black = copy.black;
+        white = new Player(Color.WHITE);
+        black = new Player(Color.BLACK);
         this.turn = copy.getTurn();
-        this.checkers = copy.checkers;
-        setInitCheckers();
+        checkers = new Checker[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Color color = getColorOfCheckerAt(i, j);
+                checkers[i][j] = color == null ? null : new Checker(color, i, j);
+            }
+        }
+        setPlayersCheckers();
     }
 
     // getters
@@ -39,17 +47,22 @@ import java.util.Stack;
         return getCheckers()[p.getX()][p.getY()];
     }
 
+    public Color getColorOfCheckerAt(int x, int y) {
+        Checker c = getCheckerAt(new Position(x, y));
+        return c == null ? null : c.getColor();
+    }
+
     public Color getTurn() {
         return turn;
     }
     public void changeTurn(){
         turn = turn.opponent();
     }
-    public Player getPlayerByColor(Color color){return color==Color.WHITE?white:black;}
-    public Player getopponent(Color color){return color==Color.WHITE?black:white;}
-    public Player getCurrentPlayer(){
-        return getTurn() == Color.WHITE ? getWhitePlayer() : getBlackPlayer();
-    }
+    public Player getPlayerByColor(Color color){ return color==Color.WHITE ? white : black; }
+
+    public Player getOpponent(Color color){ return getPlayerByColor(color.opponent()); }
+
+    public Player getCurrentPlayer(){ return getPlayerByColor(getTurn()); }
 
     // setters
     public void setCheckers(Checker[][] c) {

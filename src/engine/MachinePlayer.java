@@ -20,11 +20,11 @@ public class MachinePlayer extends Player {
         if (game.piecesContiguous(board.getPlayerByColor(color))) {
             return Integer.MAX_VALUE;//returns the value of +infinity
         }
-        if (game.piecesContiguous(board.getopponent(color))) {
+        if (game.piecesContiguous(board.getOpponent(color))) {
             return Integer.MIN_VALUE;//returns the value of -infinity
         }
         ArrayList<Position> human = board.getPlayerByColor(color).getPlayerCheckersPositions();
-        ArrayList<Position> computer = board.getopponent(color).getPlayerCheckersPositions();
+        ArrayList<Position> computer = board.getOpponent(color).getPlayerCheckersPositions();
         int comp = distance(computer);
         int hum = distance(human);
         return hum - comp;
@@ -92,7 +92,7 @@ public class MachinePlayer extends Player {
         // takes the worst case because the goal for the bot is to win the the human player to lose
             if (board.getPlayerByColor(clr) == board.getPlayerByColor(color)) {
                 for (Game b : state) {
-                    score = alphabeta(board.getopponent(clr).getColor(), b, alpha, beta, depth - 1);
+                    score = alphabeta(board.getOpponent(clr).getColor(), b, alpha, beta, depth - 1);
                     if (score > alpha) {// each score is evaluated and only the highest score for each game option is returned
                         alpha = score;
                     }
@@ -103,7 +103,7 @@ public class MachinePlayer extends Player {
                 return alpha;
             } else {
                 for (Game b : state) {
-                    score = alphabeta(board.getopponent(clr).getColor(), b, alpha, beta, depth - 1);
+                    score = alphabeta(board.getOpponent(clr).getColor(), b, alpha, beta, depth - 1);
                     if (score < beta) {// for the human player the lowest score  is returned
                         beta = score;
                     }
