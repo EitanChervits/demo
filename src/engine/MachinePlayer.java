@@ -52,10 +52,10 @@ public class MachinePlayer extends Player {
         int bestmove = Integer.MIN_VALUE;
         int current = Integer.MIN_VALUE;
         ArrayList<Position> list = null;
-        Game gameCopy = new Game(board, color);
         for (Checker c : board.getPlayerByColor(color).getMyCheckers()) {
-                list = board.canGo(c);//list of possible positions this checker can go to
+            list = board.canGo(c);//list of possible positions this checker can go to
             for (Position p:list) {
+                Board gameCopy = new Board(board);
                 gameCopy.makeAMove(c,p);
                 current = alphabeta(color.opponent(), gameCopy, alpha, beta, depth - 1);
                 //if a position can lead the bot to winning faster its marked as the best position
@@ -63,7 +63,6 @@ public class MachinePlayer extends Player {
                     bestmove = current;
                     move = new Move(c,p);
                 }
-                gameCopy.retract(board);//takes the board to his last version
             }
         }
         return move;
@@ -71,19 +70,20 @@ public class MachinePlayer extends Player {
 //returns a evaluation for a game senario few staps a head each time to be ahead of the human player
 //and to make the best moves that will lead the bot to victory faster
 // the best game scenario will get the highest score which means by making this move the bot is more likely to win
-    int alphabeta(Color clr, Game game, int alpha, int beta, int depth) {
+    int alphabeta(Color clr, Board board, int alpha, int beta, int depth) {
 
-        if (game.GameOver() != null || depth <= 0) {
+        if (board.GameOver() != null || depth <= 0) {
             return eval(board);
         }
         int score;
-        Game gameCopy = new Game(board, clr);
-        ArrayList<Game> state = new ArrayList<Game>();
-        ArrayList<Position> list = new ArrayList<Position>();
+
+        ArrayList<Board> state = new ArrayList<>();
+        ArrayList<Position> list = new ArrayList<>();
         for (Checker c : board.getPlayerByColor(clr).getMyCheckers()) {
             if (c != null)
                 list = board.canGo(c);
             for (Position p: list) {//collects all the possible moves for each checker and its effect on the game
+                Board gameCopy = new Board(board);
                 gameCopy.makeAMove(c,p);
                 state.add(gameCopy);
             }
@@ -91,7 +91,7 @@ public class MachinePlayer extends Player {
         // each game scenario is send through got get his next best move, but for the human player the function
         // takes the worst case because the goal for the bot is to win the the human player to lose
             if (board.getPlayerByColor(clr) == board.getPlayerByColor(color)) {
-                for (Game b : state) {
+                for (Board b : state) {
                     score = alphabeta(board.getOpponent(clr).getColor(), b, alpha, beta, depth - 1);
                     if (score > alpha) {// each score is evaluated and only the highest score for each game option is returned
                         alpha = score;
@@ -102,7 +102,7 @@ public class MachinePlayer extends Player {
                 }
                 return alpha;
             } else {
-                for (Game b : state) {
+                for (Board b : state) {
                     score = alphabeta(board.getOpponent(clr).getColor(), b, alpha, beta, depth - 1);
                     if (score < beta) {// for the human player the lowest score  is returned
                         beta = score;
