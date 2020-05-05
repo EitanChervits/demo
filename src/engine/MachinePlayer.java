@@ -20,11 +20,11 @@ public class MachinePlayer extends Player {
         if (game.piecesContiguous(board.getPlayerByColor(color))) {
             return Integer.MAX_VALUE;//returns the value of +infinity
         }
-        if (game.piecesContiguous(board.getopponent(color))) {
+        if (game.piecesContiguous(board.getOpponent(color))) {
             return Integer.MIN_VALUE;//returns the value of -infinity
         }
         ArrayList<Position> human = board.getPlayerByColor(color).getPlayerCheckersPositions();
-        ArrayList<Position> computer = board.getopponent(color).getPlayerCheckersPositions();
+        ArrayList<Position> computer = board.getOpponent(color).getPlayerCheckersPositions();
         int comp = distance(computer);
         int hum = distance(human);
         return hum - comp;
@@ -71,14 +71,14 @@ public class MachinePlayer extends Player {
 //returns a evaluation for a game senario few staps a head each time to be ahead of the human player
 //and to make the best moves that will lead the bot to victory faster
 // the best game scenario will get the highest score which means by making this move the bot is more likely to win
-    int alphabeta(Color clr, Game game, int alpha, int beta, int depth) {
+    int alphabeta(Color clr, Board board, int alpha, int beta, int depth) {
 
-        if (game.GameOver() != null || depth <= 0) {
+        if (board.GameOver() != null || depth <= 0) {
             return eval(board);
         }
         int score;
         Game gameCopy = new Game(board, clr);
-        ArrayList<Game> state = new ArrayList<Game>();
+        ArrayList<Board> state = new ArrayList<>();
         ArrayList<Position> list = new ArrayList<Position>();
         for (Checker c : board.getPlayerByColor(clr).getMyCheckers()) {
             if (c != null)
@@ -92,7 +92,7 @@ public class MachinePlayer extends Player {
         // takes the worst case because the goal for the bot is to win the the human player to lose
             if (board.getPlayerByColor(clr) == board.getPlayerByColor(color)) {
                 for (Game b : state) {
-                    score = alphabeta(board.getopponent(clr).getColor(), b, alpha, beta, depth - 1);
+                    score = alphabeta(board.getOpponent(clr).getColor(), b, alpha, beta, depth - 1);
                     if (score > alpha) {// each score is evaluated and only the highest score for each game option is returned
                         alpha = score;
                     }
@@ -102,8 +102,8 @@ public class MachinePlayer extends Player {
                 }
                 return alpha;
             } else {
-                for (Game b : state) {
-                    score = alphabeta(board.getopponent(clr).getColor(), b, alpha, beta, depth - 1);
+                for (Board b : state) {
+                    score = alphabeta(board.getOpponent(clr).getColor(), b, alpha, beta, depth - 1);
                     if (score < beta) {// for the human player the lowest score  is returned
                         beta = score;
                     }

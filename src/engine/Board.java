@@ -3,7 +3,7 @@ package engine;
 import java.util.ArrayList;
 import java.util.Stack;
  public class Board {
-    private Checker[][] checkers = new Checker[8][8];
+    private Checker[][] checkers ;
     private Player white;
     private Player black;
     private Color turn;
@@ -12,20 +12,32 @@ import java.util.Stack;
         white = new Player(Color.WHITE);
         black = new Player(Color.BLACK);
         turn = Color.WHITE;
+        checkers = new Checker[8][8];
         setInitCheckers();
     }
     public Board(Board copy) {
-        this.white = copy.white;
-        this.black = copy.black;
-        this.turn = copy.getTurn();
-        this.checkers = copy.checkers;
-        setInitCheckers();
+        white = new Player(Color.WHITE);
+        black = new Player(Color.BLACK);
+        turn = copy.getTurn();
+        checkers = new Checker[8][8];
+        for (int i = 0; i <8 ; i++) {
+            for (int j = 0; j <8 ; j++) {
+                Color color = getColorOfCheckerAt(i,j);
+                checkers[i][j] = color==null?null:new Checker(color,i,j);
+            }
+        }
+        setPlayersCheckers();
     }
 
     // getters
     public Checker[][] getCheckers() {
         return checkers;
     }
+
+    public Color getColorOfCheckerAt(int x, int y) {
+         Checker c = getCheckerAt(new Position(x, y));
+         return c == null ? null : c.getColor();
+     }
 
     public Player getWhitePlayer() {
         return white;
@@ -46,9 +58,9 @@ import java.util.Stack;
         turn = turn.opponent();
     }
     public Player getPlayerByColor(Color color){return color==Color.WHITE?white:black;}
-    public Player getopponent(Color color){return color==Color.WHITE?black:white;}
+    public Player getOpponent(Color color){return color==Color.WHITE?black:white;}
     public Player getCurrentPlayer(){
-        return getTurn() == Color.WHITE ? getWhitePlayer() : getBlackPlayer();
+        return getPlayerByColor(getTurn());
     }
 
     // setters
