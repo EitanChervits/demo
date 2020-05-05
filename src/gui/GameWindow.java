@@ -1,7 +1,8 @@
 package gui;
 
-import engine.Checker;
+import engine.Board;
 import engine.Color;
+import engine.Game;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,9 +22,12 @@ private ImagePanel background;
 private CheckerButton[][] checkerButtons;
 private JPanel top;
 private JPanel menu;
-private JPanel left;
+private JPanel right;
+private Game Gameboard;
+public static final int WIDTH = 77;
+public static final int HEIGHT = 59;
 
-public GameWindow() throws IOException {
+public GameWindow(Board board)  {
     frame = new JFrame("Lines Of Action");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setContentPane(background);
@@ -31,7 +35,6 @@ public GameWindow() throws IOException {
     frame.setResizable(false);
 
     checkerButtons = new CheckerButton[8][8];
-    iniCheckerButtons();
 
     img = ImageIO.read(new File("resources/chessboard.jpg"));//added exception
     background = new ImagePanel(img);
@@ -44,9 +47,10 @@ public GameWindow() throws IOException {
     menu.setOpaque(false);
     menu.setPreferredSize(new Dimension(320, 1200));
 
-    left = new JPanel();
-    left.setOpaque(false);
-    left.setPreferredSize(new Dimension(661,512));
+    right = new JPanel();
+    right.setOpaque(false);
+    right.setPreferredSize(new Dimension(661,512));
+   // right.add(checkerButtons);
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -55,18 +59,15 @@ public GameWindow() throws IOException {
     menu.add(getButton("PauseBTNpressed.png", "PauseBTNnotpressed.png", 202, 91), gbc);
     menu.add(getButton("MainMenuBTNpressed.png", "MainMenuBTNnotpressed.png", 202, 91), gbc);
 
-    // left.add();
-
     frame.add(top, BorderLayout.PAGE_START);
     frame.add(menu, BorderLayout.LINE_START);
-    frame.add(left, BorderLayout.EAST);
+    frame.add(right, BorderLayout.CENTER);
 
     frame.setSize(1066,854);
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
-
-
+    Gameboard = new Game(board,Color.WHITE);
 
 }
     private static JButton getButton(String pressedFile, String notPressedFile, int width, int height) {
@@ -88,17 +89,18 @@ public GameWindow() throws IOException {
         Image resized = toResize.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(resized);
     }
-    public void iniCheckerButtons(){
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if ((i == 0 || i == 7) && (j != 0 && j != 7))
-                    checkerButtons[i][j] = new CheckerButton(engine.Color.BLACK,i,j);//sets all the black cells
-                else if ((i != 0 && i != 7) && (j == 0 || j == 7))
-                    checkerButtons[i][j] = new CheckerButton(Color.WHITE,i,j);
-                else checkerButtons[i][j] = new CheckerButton(null,i,j);
+    public void updateBoard(){
+        int x=0,y=0;
+         for (int i = 0; i <8 ; i++) {
+             for (int j = 0; j <8 ; j++) {
+                checkerButtons[i][j] = new CheckerButton(Gameboard.getCheckers()[i][j].getColor(),x,y,i,j);
+                x+=WIDTH;
+                right.add(checkerButtons[i][j]);
             }
+             y+=HEIGHT;
         }
     }
+
     public void actionPreformed (Action action){
 
     }
@@ -110,6 +112,7 @@ public GameWindow() throws IOException {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        Object temp = e.getSource();
 
     }
 
@@ -131,5 +134,9 @@ public GameWindow() throws IOException {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+    public static void main(String[]args){
+    Board board = new Board();
+    GameWindow gameWindow = new GameWindow(board);
     }
 }

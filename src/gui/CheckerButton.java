@@ -16,13 +16,13 @@ public class CheckerButton  extends JButton implements MouseListener,
     private boolean highlighted;
     ImageIcon imageIcon = new ImageIcon("resources/GreenTitle.png");
 
-    public CheckerButton(engine.Color color, int x, int y){
-        this.position = new Position(x,y);
+    public CheckerButton(engine.Color color, int x, int y,int i,int j){
+        this.position = new Position(i,j);
         setLayout(null);
         this.addMouseListener(this);
         this.checkerColor = color;
-        setSize(77,59);
-        setContentAreaFilled(false); //sets transparent buttons
+        setBounds(x, y, 77, 59);
+        setContentAreaFilled(true); //sets transparent buttons
         this.highlighted = false;
     }
     public void Highlighted(){

@@ -250,7 +250,7 @@ import java.util.Stack;
             contigPieces++;
             for (int i = 0; i < 8; i++) {
                 Checker c = (whichCell(i, pop));
-                if (c == null) {
+                if (c == null||c.isChecked()) {
                     continue;
                 }
                 if (c.getColor() == player.getColor()) {
