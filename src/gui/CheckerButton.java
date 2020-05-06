@@ -1,5 +1,6 @@
 package gui;
 
+import engine.Color;
 import engine.Position;
 
 import javax.swing.*;
@@ -29,6 +30,15 @@ public class CheckerButton  extends JButton implements MouseListener,
         setHighlighted(true);
         this.setIcon(imageIcon);
     }
+
+    public Color getCheckerColor() {
+        return checkerColor;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
     public void setHighlighted(boolean bool){
         highlighted = bool;
     }

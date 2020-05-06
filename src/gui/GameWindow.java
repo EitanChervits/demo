@@ -3,6 +3,7 @@ package gui;
 import engine.Board;
 import engine.Color;
 import engine.Game;
+import engine.Position;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GameWindow extends JFrame implements MouseListener,
         ActionListener {
@@ -23,7 +25,7 @@ private CheckerButton[][] checkerButtons;
 private JPanel top;
 private JPanel menu;
 private JPanel right;
-private Game Gameboard;
+private Board gameBoard;
 public static final int WIDTH = 77;
 public static final int HEIGHT = 59;
 
@@ -50,7 +52,7 @@ public GameWindow(Board board)  {
     right = new JPanel();
     right.setOpaque(false);
     right.setPreferredSize(new Dimension(661,512));
-   // right.add(checkerButtons);
+    setImageIcons();
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -67,7 +69,7 @@ public GameWindow(Board board)  {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
-    Gameboard = new Game(board,Color.WHITE);
+    gameBoard = new Board(board);
 
 }
     private static JButton getButton(String pressedFile, String notPressedFile, int width, int height) {
@@ -83,6 +85,16 @@ public GameWindow(Board board)  {
         btn.setBorderPainted(false);
         return btn;
     }
+    public void setImageIcons(){
+        for (int i = 0; i <8 ; i++) {
+            for (int j = 0; j <8 ; j++) {
+                if(checkerButtons[i][j].getCheckerColor()==Color.WHITE)
+                    checkerButtons[i][j].setIcon(getResizedIcon("WhitePlyer.png",40,40));
+                else checkerButtons[i][j].setIcon(getResizedIcon("BlackPlayer.png",40,40));
+            }
+        }
+
+    }
 
     private static ImageIcon getResizedIcon(String filename, int width, int height) {
         Image toResize = new ImageIcon("resources/" + filename).getImage();
@@ -93,12 +105,22 @@ public GameWindow(Board board)  {
         int x=0,y=0;
          for (int i = 0; i <8 ; i++) {
              for (int j = 0; j <8 ; j++) {
-                checkerButtons[i][j] = new CheckerButton(Gameboard.getCheckers()[i][j].getColor(),x,y,i,j);
+                checkerButtons[i][j] = new CheckerButton(gameBoard.getCheckers()[i][j].getColor(),x,y,i,j);
                 x+=WIDTH;
                 right.add(checkerButtons[i][j]);
             }
              y+=HEIGHT;
         }
+    }
+    public CheckerButton findByPosition(Position position){
+    CheckerButton c = null;
+    for (CheckerButton[] array:checkerButtons){
+        for(c:array){
+            if(c.getPosition()==position)
+                return c;
+        }
+    }
+    return c;
     }
 
     public void actionPreformed (Action action){
@@ -113,6 +135,19 @@ public GameWindow(Board board)  {
     @Override
     public void mouseClicked(MouseEvent e) {
         Object temp = e.getSource();
+        if(temp.getClass()==CheckerButton.class){
+            if(((CheckerButton) temp).getCheckerColor()==gameBoard.getTurn()){
+                ArrayList<Position> positions = gameBoard.canGo(gameBoard.getCheckerAt(((CheckerButton) temp).getPosition()));
+                while (!positions.isEmpty()){
+                    int index = 0;
+                    CheckerButton checkerButton = findByPosition(positions.get(index));
+                    checkerButton.Highlighted();
+                    checkerButton.setHighlighted(true);
+                }
+
+            }
+        }
+
 
     }
 

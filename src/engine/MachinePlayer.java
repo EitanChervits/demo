@@ -91,7 +91,7 @@ public class MachinePlayer extends Player {
         // each game scenario is send through got get his next best move, but for the human player the function
         // takes the worst case because the goal for the bot is to win the the human player to lose
             if (board.getPlayerByColor(clr) == board.getPlayerByColor(color)) {
-                for (Game b : state) {
+                for (Board b : state) {
                     score = alphabeta(board.getOpponent(clr).getColor(), b, alpha, beta, depth - 1);
                     if (score > alpha) {// each score is evaluated and only the highest score for each game option is returned
                         alpha = score;
