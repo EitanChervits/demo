@@ -39,6 +39,10 @@ public class CheckerButton  extends JButton implements MouseListener,
         return position;
     }
 
+    public boolean isHighlighted() {
+        return highlighted;
+    }
+
     public void setHighlighted(boolean bool){
         highlighted = bool;
     }

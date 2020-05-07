@@ -28,11 +28,11 @@ private JPanel right;
 private Board gameBoard;
 public static final int WIDTH = 77;
 public static final int HEIGHT = 59;
-
-public GameWindow(Board board)  {
+    //אומר שהאקספטיון משחרר אותו והתוכנית לא תסיים לורץ אבל אם שים את הץומנה כמו שצריך התוכנית לא תעשה את האקספטיון
+public GameWindow() throws IOException {
+    gameBoard = new Board();
     frame = new JFrame("Lines Of Action");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setContentPane(background);
     frame.setLayout(new BorderLayout());
     frame.setResizable(false);
 
@@ -40,6 +40,8 @@ public GameWindow(Board board)  {
 
     img = ImageIO.read(new File("resources/chessboard.jpg"));//added exception
     background = new ImagePanel(img);
+
+    frame.setContentPane(background);
 
     top = new JPanel();
     top.setOpaque(false);
@@ -52,6 +54,7 @@ public GameWindow(Board board)  {
     right = new JPanel();
     right.setOpaque(false);
     right.setPreferredSize(new Dimension(661,512));
+    updateBoard();
     setImageIcons();
 
     GridBagConstraints gbc = new GridBagConstraints();
@@ -69,7 +72,7 @@ public GameWindow(Board board)  {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
-    gameBoard = new Board(board);
+
 
 }
     private static JButton getButton(String pressedFile, String notPressedFile, int width, int height) {
@@ -89,7 +92,7 @@ public GameWindow(Board board)  {
         for (int i = 0; i <8 ; i++) {
             for (int j = 0; j <8 ; j++) {
                 if(checkerButtons[i][j].getCheckerColor()==Color.WHITE)
-                    checkerButtons[i][j].setIcon(getResizedIcon("WhitePlyer.png",40,40));
+                    checkerButtons[i][j].setIcon(getResizedIcon("WhitePlayer.png",40,40));
                 else checkerButtons[i][j].setIcon(getResizedIcon("BlackPlayer.png",40,40));
             }
         }
@@ -105,22 +108,22 @@ public GameWindow(Board board)  {
         int x=0,y=0;
          for (int i = 0; i <8 ; i++) {
              for (int j = 0; j <8 ; j++) {
-                checkerButtons[i][j] = new CheckerButton(gameBoard.getCheckers()[i][j].getColor(),x,y,i,j);
+                checkerButtons[i][j] = new CheckerButton(gameBoard.getColorOfCheckerAt(i,j),x,y,i,j);
                 x+=WIDTH;
                 right.add(checkerButtons[i][j]);
             }
              y+=HEIGHT;
+             x=0;
         }
     }
     public CheckerButton findByPosition(Position position){
-    CheckerButton c = null;
     for (CheckerButton[] array:checkerButtons){
-        for(c:array){
+        for(CheckerButton c:array){
             if(c.getPosition()==position)
                 return c;
         }
     }
-    return c;
+    return null;
     }
 
     public void actionPreformed (Action action){
@@ -136,18 +139,20 @@ public GameWindow(Board board)  {
     public void mouseClicked(MouseEvent e) {
         Object temp = e.getSource();
         if(temp.getClass()==CheckerButton.class){
-            if(((CheckerButton) temp).getCheckerColor()==gameBoard.getTurn()){
-                ArrayList<Position> positions = gameBoard.canGo(gameBoard.getCheckerAt(((CheckerButton) temp).getPosition()));
-                while (!positions.isEmpty()){
-                    int index = 0;
-                    CheckerButton checkerButton = findByPosition(positions.get(index));
-                    checkerButton.Highlighted();
-                    checkerButton.setHighlighted(true);
-                }
+          if(!((CheckerButton) temp).isHighlighted()) {
+              if (((CheckerButton) temp).getCheckerColor() == gameBoard.getTurn()) {
+                  ArrayList<Position> positions = gameBoard.canGo(gameBoard.getCheckerAt(((CheckerButton) temp).getPosition()));
+                  while (!positions.isEmpty()) {
+                      int index = 0;
+                      CheckerButton checkerButton = findByPosition(positions.get(index));
+                      checkerButton.Highlighted();
+                      checkerButton.setHighlighted(true);
+                  }
 
-            }
+              }
+          }
+
         }
-
 
     }
 
@@ -170,8 +175,7 @@ public GameWindow(Board board)  {
     public void mouseExited(MouseEvent e) {
 
     }
-    public static void main(String[]args){
-    Board board = new Board();
-    GameWindow gameWindow = new GameWindow(board);
+    public static void main(String[]args) throws IOException{
+      GameWindow gameWindow = new GameWindow();
     }
 }
