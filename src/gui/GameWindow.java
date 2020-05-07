@@ -53,7 +53,7 @@ public GameWindow() throws IOException {
 
     right = new JPanel();
     right.setOpaque(false);
-    right.setPreferredSize(new Dimension(661,512));
+    right.setPreferredSize(new Dimension(640,512));
     updateBoard();
     setImageIcons();
 
@@ -93,7 +93,8 @@ public GameWindow() throws IOException {
             for (int j = 0; j <8 ; j++) {
                 if(checkerButtons[i][j].getCheckerColor()==Color.WHITE)
                     checkerButtons[i][j].setIcon(getResizedIcon("WhitePlayer.png",40,40));
-                else checkerButtons[i][j].setIcon(getResizedIcon("BlackPlayer.png",40,40));
+                else if(checkerButtons[i][j].getCheckerColor()==Color.BLACK)
+                checkerButtons[i][j].setIcon(getResizedIcon("BlackPlayer.png",40,40));
             }
         }
 
@@ -105,12 +106,14 @@ public GameWindow() throws IOException {
         return new ImageIcon(resized);
     }
     public void updateBoard(){
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         int x=0,y=0;
          for (int i = 0; i <8 ; i++) {
              for (int j = 0; j <8 ; j++) {
                 checkerButtons[i][j] = new CheckerButton(gameBoard.getColorOfCheckerAt(i,j),x,y,i,j);
                 x+=WIDTH;
-                right.add(checkerButtons[i][j]);
+                right.add(checkerButtons[i][j],gbc);
             }
              y+=HEIGHT;
              x=0;
