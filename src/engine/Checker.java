@@ -49,16 +49,7 @@ public class Checker {
         return getColor() + "---"
                 /* + "\nIt's engine.Position on engine.Board : " + getPosition().draw() */;
     }
-    //tells if a checker is a border cell
-    public boolean checkerIsBorder(){
-        if(position.getX()==0||position.getY()==0||position.getX()==7||position.getY()==7)
-            return true;
-        return false;
-    }
-
-
 }
-
 
 
 
