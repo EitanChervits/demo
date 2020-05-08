@@ -9,21 +9,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Ellipse2D;
 
 public class CheckerButton  extends JButton implements MouseListener,
         ActionListener {
     private engine.Color checkerColor;
     private Position position;
     private boolean highlighted;
-    ImageIcon imageIcon = new ImageIcon("resources/GreenTitle.png");
+    //ImageIcon imageIcon = new ImageIcon("resources/GreenTile.png");
+    private ImageIcon imageIcon = GameWindow.getResizedIcon("GreenTile.png", 60,60);
 
-    public CheckerButton(engine.Color color, int x, int y,int i,int j){
+    public CheckerButton(engine.Color color, /*int x, int y,*/int i,int j){
         this.position = new Position(i,j);
         setLayout(null);
         this.addMouseListener(this);
         this.checkerColor = color;
-        setBounds(x, y, 77, 59);
-        setContentAreaFilled(true); //sets transparent buttons
+        //setBounds(x, y, 85, 85);
+        //setPreferredSize(new Dimension(72,72));
+        setOpaque(false);
+        setContentAreaFilled(false); //sets transparent buttons
+        setBorderPainted(false);
         this.highlighted = false;
     }
     public void Highlighted(){
@@ -69,11 +74,15 @@ public class CheckerButton  extends JButton implements MouseListener,
 
     @Override
     public void mouseEntered(MouseEvent e) {
-//keep empty
+/*        setFocusable(true);
+        grabFocus();
+        setEnabled(true);*/
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-//keep empty
+/*        setFocusable(false);
+        grabFocus();
+        setEnabled(false);*/
     }
 }
