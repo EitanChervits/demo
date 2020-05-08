@@ -126,28 +126,24 @@ public class GameWindow extends JFrame implements MouseListener,
 
     }
 
-    private static ImageIcon getResizedIcon(String filename, int width, int height) {
+    protected static ImageIcon getResizedIcon(String filename, int width, int height) {
         Image toResize = new ImageIcon("resources/" + filename).getImage();
         Image resized = toResize.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(resized);
     }
+
     public void updateBoard(){
          for (int i = 0; i <8 ; i++) {
              for (int j = 0; j <8 ; j++) {
                 checkerButtons[i][j] = new CheckerButton(gameBoard.getColorOfCheckerAt(i,j),i,j);
+                checkerButtons[i][j].addMouseListener(this);
                 right.add(checkerButtons[i][j]);
             }
         }
     }
 
     public CheckerButton findByPosition(Position position){
-    for (CheckerButton[] array:checkerButtons){
-        for(CheckerButton c:array){
-            if(c.getPosition()==position)
-                return c;
-        }
-    }
-    return null;
+        return checkerButtons[position.getX()][position.getY()];
     }
 
     public void actionPreformed (Action action){
@@ -196,11 +192,12 @@ public class GameWindow extends JFrame implements MouseListener,
         if(temp instanceof CheckerButton) {
             CheckerButton hovered = (CheckerButton) temp;
             Checker checker = gameBoard.getCheckerAt(hovered.getPosition());
-            ArrayList<Position> positions = gameBoard.canGo(checker);
-            for (Position p : positions) {
-                CheckerButton checkerButton = findByPosition(p);
-                checkerButton.Highlighted();
-                checkerButton.setHighlighted(true);
+            if (checker != null) {
+                ArrayList<Position> positions = gameBoard.canGo(checker);
+                for (Position p : positions) {
+                    CheckerButton checkerButton = findByPosition(p);
+                    checkerButton.setHighlighted(true);
+                }
             }
         }
     }

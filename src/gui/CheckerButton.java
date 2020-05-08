@@ -9,13 +9,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Ellipse2D;
 
 public class CheckerButton  extends JButton implements MouseListener,
         ActionListener {
     private engine.Color checkerColor;
     private Position position;
     private boolean highlighted;
-    ImageIcon imageIcon = new ImageIcon("resources/GreenTitle.png");
+    //ImageIcon imageIcon = new ImageIcon("resources/GreenTile.png");
+    private ImageIcon imageIcon = GameWindow.getResizedIcon("GreenTile.png", 60,60);
 
     public CheckerButton(engine.Color color, /*int x, int y,*/int i,int j){
         this.position = new Position(i,j);
@@ -72,15 +74,15 @@ public class CheckerButton  extends JButton implements MouseListener,
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        setFocusable(true);
+/*        setFocusable(true);
         grabFocus();
-        setEnabled(true);
+        setEnabled(true);*/
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        setFocusable(false);
+/*        setFocusable(false);
         grabFocus();
-        setEnabled(false);
+        setEnabled(false);*/
     }
 }

@@ -169,61 +169,60 @@ import java.util.Stack;
     public ArrayList<Position> canGo(Checker c) {
         int x = c.getPosition().getX();
         int y = c.getPosition().getY();
-        int counter = countUpDown(c);
-       ArrayList<Position> list= new ArrayList<Position>();
+        int counter;
+        ArrayList<Position> list= new ArrayList<Position>();
 
         //can go up and down
 		/* 7	0	1
 		   6	cell 2
 		   5     4    3
 		 */
-        if (x + counter < 8 && checkers[x + counter][y].getColor() != c.getColor()){
-            Position position = new Position(x+counter,y);
-            list.add(position);
+
+        //can go up and down
+        counter = countUpDown(c);
+        //can go down
+        if (x + counter <= 7 && getColorOfCheckerAt(x + counter, y) != c.getColor()){
+            list.add(new Position(x + counter, y));
         }
-        ;//the cell can go in that direction(down)
-        if (x - counter >= 0 && checkers[x - counter][y].getColor() != c.getColor()){
-            Position position = new Position(x-counter,y+counter);
-            list.add(position);
-        }
-        counter = countLeftRight(c);
-        if (y + counter < 8 && checkers[x][y + counter].getColor() != c.getColor()){
-            Position position = new Position(x,y+counter);
-            list.add(position);
+        //can go up
+        if (x - counter >= 0 && getColorOfCheckerAt(x - counter, y) != c.getColor()){
+            list.add(new Position(x - counter, y));
         }
 
-        if (y - counter >= 0 && checkers[x][y - counter].getColor() != c.getColor()){
-            Position position = new Position(x,y-counter);
-            list.add(position);
+        //can go left and right
+        counter = countLeftRight(c);
+        //can go right
+        if (y + counter <= 7 && getColorOfCheckerAt(x, y + counter) != c.getColor()){
+            list.add(new Position(x,y + counter));
         }
-            //the cell can go in that direction(left)
-        //from up left to bottom right
+        //can go left
+        if (y - counter >= 0 && getColorOfCheckerAt(x, y - counter) != c.getColor()){
+            list.add(new Position(x,y - counter));
+        }
+
+        //can go up left to down right
         counter = countTopLeftToBottomRight(c);
-        if (y + counter < 8 && x + counter < 8 && checkers[x + counter][y + counter].getColor() != c.getColor()){
-            Position position = new Position(x+counter,y+counter);
-            list.add(position);
+        //can go down-right
+        if (x + counter <= 7 && y + counter <= 7 && getColorOfCheckerAt(x + counter, y + counter) != c.getColor()){
+            list.add(new Position(x + counter,y + counter));
         }
-            //bottom right
-        if (y - counter < 8 && x - counter < 8 && checkers[x - counter][y - counter].getColor() != c.getColor()){
-            Position position = new Position(x-counter,y-counter);
-            list.add(position);
+        //can go up-left
+        if (x - counter >= 0 && y - counter >= 0 && getColorOfCheckerAt(x - counter, y - counter) != c.getColor()){
+            list.add(new Position(x - counter,y - counter));
         }
-            //bottom right
-        //from up right to bottom left
+
+        //can go up right to down left
         counter = countTopRightToBottomLeft(c);
-        if (y + counter < 8 && x - counter < 8 && checkers[x - counter][y + counter].getColor() != c.getColor()){
-            Position position = new Position(x-counter,y+counter);
-            list.add(position);
+        //can go down-left
+        if (x - counter >= 0 && y + counter <= 7 && getColorOfCheckerAt(x - counter, y + counter) != c.getColor()){
+            list.add(new Position(x - counter,y + counter));
         }
-            //top right
-        if (y - counter < 8 && x + counter < 8 && checkers[x + counter][y - counter].getColor() != c.getColor()){
-            Position position = new Position(x+counter,y-counter);
-            list.add(position);
+        //can go up-right
+        if (x + counter <= 7 && y - counter >= 0 && getColorOfCheckerAt(x + counter, y - counter) != c.getColor()){
+            list.add(new Position(x + counter,y - counter));
         }
-            //bottom left
 
         return list;
-
     }
 
 
