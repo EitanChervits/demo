@@ -14,6 +14,7 @@ import java.util.Stack;
         turn = Color.WHITE;
         checkers = new Checker[8][8];
         setInitCheckers();
+        setPlayersCheckers();
     }
     public Board(Board copy) {
         white = new Player(Color.WHITE);
@@ -99,9 +100,9 @@ import java.util.Stack;
     public void setPlayersCheckers() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (checkers[i][j].getColor() == Color.WHITE)
+                if (getColorOfCheckerAt(i, j) == Color.WHITE)
                     white.addChecker(checkers[i][j]);
-                else if (checkers[i][j].getColor() == Color.BLACK)
+                else if (getColorOfCheckerAt(i, j) == Color.BLACK)
                     black.addChecker(checkers[i][j]);
             }
         }
@@ -252,7 +253,7 @@ import java.util.Stack;
     protected boolean piecesContiguous(Player player) {
         int contigPieces = 0;
         Stack<Checker> stack = new Stack<>();
-        Checker firstSpot = player.getMyCheckers()[0];
+        Checker firstSpot = player.getMyCheckers().get(0);
         stack.push(firstSpot);
         firstSpot.setChecked(true);
         Checker pop;
@@ -281,12 +282,8 @@ import java.util.Stack;
     }
     //the function switches between the moving checker and the distention cell and clears the moving cell
 //	plus changes the position of the moving checker in the players' checkers array
-    protected void makeAMove(Checker checker,Position position){
+    public void makeAMove(Checker checker,Position position){
         setCheckerAt(checker,position);
-        for (Checker c : getCurrentPlayer().getMyCheckers()){
-            if (c==checker)
-                c.setPosition(position);
-        }
         changeTurn();
 
     }

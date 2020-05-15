@@ -16,8 +16,9 @@ public class CheckerButton  extends JButton implements MouseListener,
     private engine.Color checkerColor;
     private Position position;
     private boolean highlighted;
+    private static boolean oneButtonClicked = false;
     //ImageIcon imageIcon = new ImageIcon("resources/GreenTile.png");
-    private ImageIcon imageIcon = GameWindow.getResizedIcon("GreenTile.png", 60,60);
+    protected static ImageIcon imageIcon = GameWindow.getResizedIcon("GreenTile.png", 60,60);
 
     public CheckerButton(engine.Color color, /*int x, int y,*/int i,int j){
         this.position = new Position(i,j);
@@ -34,6 +35,8 @@ public class CheckerButton  extends JButton implements MouseListener,
     public void Highlighted(){
         setHighlighted(true);
         this.setIcon(imageIcon);
+        validate();
+        repaint();
     }
 
     public Color getCheckerColor() {
@@ -50,6 +53,14 @@ public class CheckerButton  extends JButton implements MouseListener,
 
     public void setHighlighted(boolean bool){
         highlighted = bool;
+    }
+
+    public static void switchOneButtonClicked() {
+        oneButtonClicked = !oneButtonClicked;
+    }
+
+    public static boolean isOneButtonClicked() {
+        return oneButtonClicked;
     }
 
     @Override
