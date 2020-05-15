@@ -41,8 +41,8 @@ import java.util.Stack;
      }
 
     public Color getColorOfCheckerAt(Position p) {
-    return getColorOfCheckerAt(p.getX(), p.getY());
-    }
+        return getColorOfCheckerAt(p.getX(), p.getY());
+     }
 
     public Player getWhitePlayer() {
         return white;
