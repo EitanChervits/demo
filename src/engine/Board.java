@@ -215,12 +215,12 @@ import java.util.Stack;
         //can go up right to down left
         counter = countTopRightToBottomLeft(c);
         //can go down-left
-        if (x - counter >= 0 && y + counter <= 7 && getColorOfCheckerAt(x - counter, y + counter) != c.getColor()){
-            list.add(new Position(x - counter,y + counter));
-        }
-        //can go up-right
         if (x + counter <= 7 && y - counter >= 0 && getColorOfCheckerAt(x + counter, y - counter) != c.getColor()){
             list.add(new Position(x + counter,y - counter));
+        }
+        //can go up-right
+        if (x - counter >= 0 && y + counter <= 7 && getColorOfCheckerAt(x - counter, y + counter) != c.getColor()){
+            list.add(new Position(x - counter,y + counter));
         }
 
         return list;
