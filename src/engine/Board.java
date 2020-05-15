@@ -40,6 +40,10 @@ import java.util.Stack;
          return c == null ? null : c.getColor();
      }
 
+    public Color getColorOfCheckerAt(Position p) {
+    return getColorOfCheckerAt(p.getX(), p.getY());
+    }
+
     public Player getWhitePlayer() {
         return white;
     }

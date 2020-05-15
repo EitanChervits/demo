@@ -13,7 +13,7 @@ import java.awt.geom.Ellipse2D;
 
 public class CheckerButton  extends JButton implements MouseListener,
         ActionListener {
-    private engine.Color checkerColor;
+/*    private engine.Color checkerColor;*/
     private Position position;
     private boolean highlighted;
     private static boolean oneButtonClicked = false;
@@ -24,7 +24,7 @@ public class CheckerButton  extends JButton implements MouseListener,
         this.position = new Position(i,j);
         setLayout(null);
         this.addMouseListener(this);
-        this.checkerColor = color;
+        //this.checkerColor = color;
         //setBounds(x, y, 85, 85);
         //setPreferredSize(new Dimension(72,72));
         setOpaque(false);
@@ -39,9 +39,9 @@ public class CheckerButton  extends JButton implements MouseListener,
         repaint();
     }
 
-    public Color getCheckerColor() {
+/*    public Color getCheckerColor() {
         return checkerColor;
-    }
+    }*/
 
     public Position getPosition() {
         return position;

@@ -186,7 +186,7 @@ public class GameWindow extends JFrame implements MouseListener,
         if(temp instanceof CheckerButton){
             CheckerButton cb = (CheckerButton) temp;
             Position p = cb.getPosition();
-            if (gameBoard.getTurn() == cb.getCheckerColor()) {
+            if (gameBoard.getTurn() == gameBoard.getColorOfCheckerAt(p)) {
                 System.out.println("Clicked on [" + p.getX() + "," + p.getY() + "]");
                 Checker checker = gameBoard.getCheckerAt(p);
                 clickedPosition = firstHit ? p : null;
@@ -290,14 +290,15 @@ public class GameWindow extends JFrame implements MouseListener,
         Object temp = e.getSource();
         if(temp instanceof CheckerButton) {
             CheckerButton hovered = (CheckerButton) temp;
-            if (hovered.getCheckerColor() == gameBoard.getTurn()) {
+            Position p = hovered.getPosition();
+            if (gameBoard.getTurn() == gameBoard.getColorOfCheckerAt(p)) {
                 System.out.println("Hovered on [" + hovered.getPosition().getX() + "," + hovered.getPosition().getY() + "]");
                 //hovered.setIcon(null);
                 Checker checker = gameBoard.getCheckerAt(hovered.getPosition());
                 if (checker != null) {
                     ArrayList<Position> positions = gameBoard.canGo(checker);
-                    for (Position p : positions) {
-                        CheckerButton checkerButton = findByPosition(p);
+                    for (Position pos : positions) {
+                        CheckerButton checkerButton = findByPosition(pos);
                         checkerButton.setHighlighted(true);
                         checkerButton.setIcon(CheckerButton.imageIcon);
                     }
@@ -311,16 +312,16 @@ public class GameWindow extends JFrame implements MouseListener,
         Object temp = e.getSource();
         if(temp instanceof CheckerButton) {
             CheckerButton hovered = (CheckerButton) temp;
-            if (hovered.getCheckerColor() == gameBoard.getTurn()) {
+            Position p = hovered.getPosition();
+            if (gameBoard.getTurn() == gameBoard.getColorOfCheckerAt(p)) {
                 System.out.println("Hovered on [" + hovered.getPosition().getX() + "," + hovered.getPosition().getY() + "]");
-                //hovered.setIcon(null);
                 Checker checker = gameBoard.getCheckerAt(hovered.getPosition());
                 if (checker != null) {
                     ArrayList<Position> positions = gameBoard.canGo(checker);
-                    for (Position p : positions) {
-                        CheckerButton checkerButton = findByPosition(p);
+                    for (Position pos : positions) {
+                        CheckerButton checkerButton = findByPosition(pos);
                         checkerButton.setHighlighted(false);
-                        checkerButton.setIcon(matchingImgIcon(checkerButton.getCheckerColor()));
+                        checkerButton.setIcon(matchingImgIcon(gameBoard.getColorOfCheckerAt(pos)));
                     }
                 }
             }
