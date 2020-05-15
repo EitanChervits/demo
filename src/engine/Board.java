@@ -39,6 +39,10 @@ import java.util.Stack;
          return c == null ? null : c.getColor();
      }
 
+    public Color getColorOfCheckerAt(Position p) {
+        return getColorOfCheckerAt(p.getX(), p.getY());
+     }
+
     public Player getWhitePlayer() {
         return white;
     }
@@ -281,7 +285,7 @@ import java.util.Stack;
     }
     //the function switches between the moving checker and the distention cell and clears the moving cell
 //	plus changes the position of the moving checker in the players' checkers array
-    protected void makeAMove(Checker checker,Position position){
+    public void makeAMove(Checker checker,Position position){
         setCheckerAt(checker,position);
         for (Checker c : getCurrentPlayer().getMyCheckers()){
             if (c==checker)

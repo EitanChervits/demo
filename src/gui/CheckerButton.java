@@ -17,7 +17,7 @@ public class CheckerButton  extends JButton implements MouseListener,
     private Position position;
     private boolean highlighted;
     //ImageIcon imageIcon = new ImageIcon("resources/GreenTile.png");
-    private ImageIcon imageIcon = GameWindow.getResizedIcon("GreenTile.png", 60,60);
+    public static ImageIcon imageIcon = GameWindow.getResizedIcon("GreenTile.png", 60,60);
 
     public CheckerButton(engine.Color color, /*int x, int y,*/int i,int j){
         this.position = new Position(i,j);

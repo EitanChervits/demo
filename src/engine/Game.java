@@ -23,7 +23,7 @@ public class Game extends Board {
     }
 
     @Override
-    protected void makeAMove(Checker checker, Position position) {
+    public void makeAMove(Checker checker, Position position) {
         super.makeAMove(checker, position);
     }
 

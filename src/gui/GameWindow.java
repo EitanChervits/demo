@@ -19,6 +19,12 @@ public class GameWindow extends JFrame implements MouseListener,
     private CheckerButton[][] checkerButtons;
     private JPanel right;
     private Board gameBoard;
+    private JButton play;
+
+    private ImageIcon whitePieceImg;
+    private ImageIcon blackPieceImg;
+
+    private Checker clickedChecker;
 
     //אומר שהאקספטיון משחרר אותו והתוכנית לא תסיים לורץ אבל אם שים את הץומנה כמו שצריך התוכנית לא תעשה את האקספטיון
     public GameWindow() throws IOException {
@@ -26,6 +32,9 @@ public class GameWindow extends JFrame implements MouseListener,
         int hei = 854;
         int topHei = 120;
         int menuWid = 325;
+
+        whitePieceImg = getResizedIcon("WhitePlayer.png",65,65);
+        blackPieceImg = getResizedIcon("BlackPlayer.png",65,65);
 
 
         gameBoard = new Board();
@@ -79,7 +88,9 @@ public class GameWindow extends JFrame implements MouseListener,
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
-        menu.add(getButton("PlayBTNpressed.png", "PlayBTNnotpressed.png", 202, 91), gbc);
+        play = getButton("PlayBTNpressed.png", "PlayBTNnotpressed.png", 202, 91);
+        play.addActionListener(this);
+        menu.add(play, gbc);
         menu.add(getButton("RestartBTNpressed.png", "RestartBTNnotpressed.png", 202, 91), gbc);
         menu.add(getButton("PauseBTNpressed.png", "PauseBTNnotpressed.png", 202, 91), gbc);
         menu.add(getButton("MainMenuBTNpressed.png", "MainMenuBTNnotpressed.png", 202, 91), gbc);
@@ -117,13 +128,14 @@ public class GameWindow extends JFrame implements MouseListener,
     public void setImageIcons(){
         for (int i = 0; i <8 ; i++) {
             for (int j = 0; j <8 ; j++) {
-                if(checkerButtons[i][j].getCheckerColor()==Color.WHITE)
-                    checkerButtons[i][j].setIcon(getResizedIcon("WhitePlayer.png",65,65));
-                else if(checkerButtons[i][j].getCheckerColor()==Color.BLACK)
-                checkerButtons[i][j].setIcon(getResizedIcon("BlackPlayer.png",65,65));
+                if(gameBoard.getColorOfCheckerAt(i, j)==Color.WHITE)
+                    checkerButtons[i][j].setIcon(whitePieceImg);
+                else if(gameBoard.getColorOfCheckerAt(i, j)==Color.BLACK)
+                    checkerButtons[i][j].setIcon(blackPieceImg);
+                else
+                    checkerButtons[i][j].setIcon(null);
             }
         }
-
     }
 
     protected static ImageIcon getResizedIcon(String filename, int width, int height) {
@@ -136,7 +148,6 @@ public class GameWindow extends JFrame implements MouseListener,
          for (int i = 0; i <8 ; i++) {
              for (int j = 0; j <8 ; j++) {
                 checkerButtons[i][j] = new CheckerButton(gameBoard.getColorOfCheckerAt(i,j),i,j);
-                checkerButtons[i][j].addMouseListener(this);
                 right.add(checkerButtons[i][j]);
             }
         }
@@ -146,34 +157,41 @@ public class GameWindow extends JFrame implements MouseListener,
         return checkerButtons[position.getX()][position.getY()];
     }
 
-    public void actionPreformed (Action action){
-
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == play) {
+            makeBoardActive();
+        }
+    }
 
+    public void makeBoardActive(){
+        for (int i = 0; i <8 ; i++) {
+            for (int j = 0; j <8 ; j++) {
+                checkerButtons[i][j].addMouseListener(this);
+            }
+        }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         Object temp = e.getSource();
-        if(temp.getClass()==CheckerButton.class){
-          if(!((CheckerButton) temp).isHighlighted()) {
-              if (((CheckerButton) temp).getCheckerColor() == gameBoard.getTurn()) {
-                  ArrayList<Position> positions = gameBoard.canGo(gameBoard.getCheckerAt(((CheckerButton) temp).getPosition()));
-                  while (!positions.isEmpty()) {
-                      int index = 0;
-                      CheckerButton checkerButton = findByPosition(positions.get(index));
-                      checkerButton.Highlighted();
-                      checkerButton.setHighlighted(true);
-                  }
-
-              }
-          }
-
+        if(temp instanceof CheckerButton) {
+            CheckerButton clicked = (CheckerButton) temp;
+            Position p = clicked.getPosition();
+            if (gameBoard.getTurn() == gameBoard.getColorOfCheckerAt(p)) {
+                System.out.println("Clicked on [" + p.getX() + "," + p.getY() +"]");
+                Checker c = gameBoard.getCheckerAt(p);
+                if (clickedChecker == null) {
+                    clickedChecker = c;
+                } else if (clickedChecker == c) {
+                    clickedChecker = null;
+                }
+            } else if (clickedChecker != null) {
+                gameBoard.makeAMove(clickedChecker, p);
+                setImageIcons();
+                clickedChecker = null;
+            }
         }
-
     }
 
     @Override
@@ -191,12 +209,14 @@ public class GameWindow extends JFrame implements MouseListener,
         Object temp = e.getSource();
         if(temp instanceof CheckerButton) {
             CheckerButton hovered = (CheckerButton) temp;
-            Checker checker = gameBoard.getCheckerAt(hovered.getPosition());
-            if (checker != null) {
-                ArrayList<Position> positions = gameBoard.canGo(checker);
-                for (Position p : positions) {
-                    CheckerButton checkerButton = findByPosition(p);
-                    checkerButton.setHighlighted(true);
+            Position p = hovered.getPosition();
+            if (gameBoard.getTurn() == gameBoard.getColorOfCheckerAt(p)) {
+                System.out.println("Hovered on [" + p.getX() + "," + p.getY() +"]");
+                Checker c = gameBoard.getCheckerAt(p);
+                ArrayList<Position> positions = gameBoard.canGo(c);
+                for (Position pos : positions) {
+                    CheckerButton cb = findByPosition(pos);
+                    cb.setIcon(CheckerButton.imageIcon);
                 }
             }
         }
@@ -204,8 +224,29 @@ public class GameWindow extends JFrame implements MouseListener,
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        Object temp = e.getSource();
+        if(temp instanceof CheckerButton) {
+            CheckerButton hovered = (CheckerButton) temp;
+            Position p = hovered.getPosition();
+            if (gameBoard.getTurn() == gameBoard.getColorOfCheckerAt(p)) {
+                System.out.println("Hovered on [" + p.getX() + "," + p.getY() +"]");
+                Checker c = gameBoard.getCheckerAt(p);
+                ArrayList<Position> positions = gameBoard.canGo(c);
+                for (Position pos : positions) {
+                    CheckerButton cb = findByPosition(pos);
+                    cb.setIcon(getImgOfPieceAt(pos));
+                }
+            }
+        }
     }
+
+    private ImageIcon getImgOfPieceAt(Position p) {
+        Color color = gameBoard.getColorOfCheckerAt(p);
+        return color == Color.WHITE ? whitePieceImg :
+                color == Color.BLACK ? blackPieceImg :
+                null;
+    }
+
     public static void main(String[]args) throws IOException{
       GameWindow gameWindow = new GameWindow();
     }
