@@ -156,7 +156,7 @@ public class GameWindow extends JFrame implements MouseListener,
     public void updateBoard(){
          for (int i = 0; i <8 ; i++) {
              for (int j = 0; j <8 ; j++) {
-                checkerButtons[i][j] = new CheckerButton(gameBoard.getColorOfCheckerAt(i,j),i,j);
+                checkerButtons[i][j] = new CheckerButton(i, j);
                 right.add(checkerButtons[i][j]);
             }
         }
@@ -190,17 +190,33 @@ public class GameWindow extends JFrame implements MouseListener,
             if (gameBoard.getTurn() == gameBoard.getColorOfCheckerAt(p)) {
                 System.out.println("Clicked on [" + p.getX() + "," + p.getY() +"]");
                 Checker c = gameBoard.getCheckerAt(p);
-                if (clickedChecker == null) {
-                    clickedChecker = c;
-                } else if (clickedChecker == c) {
-                    clickedChecker = null;
+                if (!isFirstCheckerClicked()) {
+                    setFirstCheckerClicked(c);
+                } else if (isClickedFirstCheckerAgain(c)) {
+                    deselectFirstChecker();
                 }
-            } else if (clickedChecker != null) {
+            } else if (isFirstCheckerClicked()) {
                 gameBoard.makeAMove(clickedChecker, p);
                 setImageIcons();
-                clickedChecker = null;
+                deselectFirstChecker();
             }
         }
+    }
+
+    private boolean isFirstCheckerClicked() {
+        return clickedChecker != null;
+    }
+
+    private void setFirstCheckerClicked(Checker c) {
+        clickedChecker = c;
+    }
+
+    private boolean isClickedFirstCheckerAgain(Checker c) {
+        return clickedChecker == c;
+    }
+
+    private void deselectFirstChecker() {
+        setFirstCheckerClicked(null);
     }
 
     @Override
