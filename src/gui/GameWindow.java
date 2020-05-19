@@ -26,15 +26,21 @@ public class GameWindow extends JFrame implements MouseListener,
 
     private Checker clickedChecker;
 
-    //אומר שהאקספטיון משחרר אותו והתוכנית לא תסיים לורץ אבל אם שים את הץומנה כמו שצריך התוכנית לא תעשה את האקספטיון
     public GameWindow() throws IOException {
-        int wid = 1066;
-        int hei = 854;
-        int topHei = 120;
-        int menuWid = 325;
+        double wid2HeiRatio = 1066.0 / 854.0;
+        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenHeight = screenDimension.height;
+        int windowHeight = (int) (0.8 * screenHeight);
+        int windowWidth = (int) (windowHeight * wid2HeiRatio);
 
-        whitePieceImg = getResizedIcon("WhitePlayer.png",65,65);
-        blackPieceImg = getResizedIcon("BlackPlayer.png",65,65);
+        double resizeRatio = windowHeight / 854.0;
+
+
+        int topHei = (int) (windowHeight * 0.14);
+        int menuWid = (int) (windowWidth * 0.3);;
+
+        whitePieceImg = getResizedIcon("WhitePlayer.png",(int) (65 * resizeRatio),(int) (65 * resizeRatio));
+        blackPieceImg = getResizedIcon("BlackPlayer.png",(int) (65 * resizeRatio),(int) (65 * resizeRatio));
 
 
         gameBoard = new Board();
@@ -52,18 +58,18 @@ public class GameWindow extends JFrame implements MouseListener,
 
         JPanel top = new JPanel();
         top.setOpaque(false);
-        top.setPreferredSize(new Dimension(wid, topHei));
+        top.setPreferredSize(new Dimension(windowWidth, topHei));
 
         JPanel menu = new JPanel();
         menu.setOpaque(false);
-        menu.setPreferredSize(new Dimension(260, hei - topHei - 35));
+        menu.setPreferredSize(new Dimension(260, windowHeight - topHei - 35));
 
         JPanel menu2 = new JPanel();
         menu2.setOpaque(false);
-        menu2.setPreferredSize(new Dimension(menuWid, hei - topHei - 35));
+        menu2.setPreferredSize(new Dimension(menuWid, windowHeight - topHei - 35));
         JPanel menuRight = new JPanel();
         menuRight.setOpaque(false);
-        menuRight.setPreferredSize(new Dimension(0, hei - topHei - 35));
+        menuRight.setPreferredSize(new Dimension(0, windowHeight - topHei - 35));
         menu2.setLayout(new BorderLayout());
         menu2.add(menu, BorderLayout.LINE_START);
         menu2.add(menuRight, BorderLayout.LINE_END);
@@ -79,7 +85,7 @@ public class GameWindow extends JFrame implements MouseListener,
 
         right = new JPanel();
         right.setOpaque(false);
-        right.setPreferredSize(new Dimension(wid - menuWid - 110,600));
+        right.setPreferredSize(new Dimension(windowWidth - menuWid - 110,600));
         right.setLayout(new GridLayout(8,8));
         updateBoard();
         setImageIcons();
@@ -88,12 +94,15 @@ public class GameWindow extends JFrame implements MouseListener,
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
-        play = getButton("PlayBTNpressed.png", "PlayBTNnotpressed.png", 202, 91);
+
+        int btnWidth = (int) (202 * resizeRatio);
+        int bthHeight = (int) (91 * resizeRatio);
+        play = getButton("PlayBTNpressed.png", "PlayBTNnotpressed.png", btnWidth, bthHeight);
         play.addActionListener(this);
         menu.add(play, gbc);
-        menu.add(getButton("RestartBTNpressed.png", "RestartBTNnotpressed.png", 202, 91), gbc);
-        menu.add(getButton("PauseBTNpressed.png", "PauseBTNnotpressed.png", 202, 91), gbc);
-        menu.add(getButton("MainMenuBTNpressed.png", "MainMenuBTNnotpressed.png", 202, 91), gbc);
+        menu.add(getButton("RestartBTNpressed.png", "RestartBTNnotpressed.png", btnWidth, bthHeight), gbc);
+        menu.add(getButton("PauseBTNpressed.png", "PauseBTNnotpressed.png", btnWidth, bthHeight), gbc);
+        menu.add(getButton("MainMenuBTNpressed.png", "MainMenuBTNnotpressed.png", btnWidth, bthHeight), gbc);
 
         frame.add(top, BorderLayout.PAGE_START);
         frame.add(menu2, BorderLayout.LINE_START);
@@ -101,10 +110,10 @@ public class GameWindow extends JFrame implements MouseListener,
 
         JPanel rightEmpty = new JPanel();
         rightEmpty.setOpaque(false);
-        rightEmpty.setPreferredSize(new Dimension(60,hei - topHei));
+        rightEmpty.setPreferredSize(new Dimension(60, windowHeight - topHei));
         frame.add(rightEmpty, BorderLayout.LINE_END);
 
-        frame.setPreferredSize(new Dimension(wid, hei));
+        frame.setPreferredSize(new Dimension(windowWidth, windowHeight));
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -147,7 +156,7 @@ public class GameWindow extends JFrame implements MouseListener,
     public void updateBoard(){
          for (int i = 0; i <8 ; i++) {
              for (int j = 0; j <8 ; j++) {
-                checkerButtons[i][j] = new CheckerButton(gameBoard.getColorOfCheckerAt(i,j),i,j);
+                checkerButtons[i][j] = new CheckerButton(i, j);
                 right.add(checkerButtons[i][j]);
             }
         }
@@ -181,17 +190,33 @@ public class GameWindow extends JFrame implements MouseListener,
             if (gameBoard.getTurn() == gameBoard.getColorOfCheckerAt(p)) {
                 System.out.println("Clicked on [" + p.getX() + "," + p.getY() +"]");
                 Checker c = gameBoard.getCheckerAt(p);
-                if (clickedChecker == null) {
-                    clickedChecker = c;
-                } else if (clickedChecker == c) {
-                    clickedChecker = null;
+                if (!isFirstCheckerClicked()) {
+                    setFirstCheckerClicked(c);
+                } else if (isClickedFirstCheckerAgain(c)) {
+                    deselectFirstChecker();
                 }
-            } else if (clickedChecker != null) {
+            } else if (isFirstCheckerClicked()) {
                 gameBoard.makeAMove(clickedChecker, p);
                 setImageIcons();
-                clickedChecker = null;
+                deselectFirstChecker();
             }
         }
+    }
+
+    private boolean isFirstCheckerClicked() {
+        return clickedChecker != null;
+    }
+
+    private void setFirstCheckerClicked(Checker c) {
+        clickedChecker = c;
+    }
+
+    private boolean isClickedFirstCheckerAgain(Checker c) {
+        return clickedChecker == c;
+    }
+
+    private void deselectFirstChecker() {
+        setFirstCheckerClicked(null);
     }
 
     @Override

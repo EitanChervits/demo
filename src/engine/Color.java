@@ -3,7 +3,7 @@ package engine;
 public enum Color {
     WHITE, BLACK;
 
-    Color opponent() {
+    public Color opponent() {
         return this == WHITE ? BLACK : WHITE;
     }
 

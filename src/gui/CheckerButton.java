@@ -1,29 +1,26 @@
 package gui;
 
-import engine.Color;
 import engine.Position;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Ellipse2D;
 
 public class CheckerButton  extends JButton implements MouseListener,
         ActionListener {
-    private engine.Color checkerColor;
+
     private Position position;
     private boolean highlighted;
-    //ImageIcon imageIcon = new ImageIcon("resources/GreenTile.png");
-    public static ImageIcon imageIcon = GameWindow.getResizedIcon("GreenTile.png", 60,60);
 
-    public CheckerButton(engine.Color color, /*int x, int y,*/int i,int j){
+    protected static ImageIcon imageIcon = GameWindow.getResizedIcon("GreenTile.png", 60,60);
+
+    public CheckerButton(int i,int j){
         this.position = new Position(i,j);
         setLayout(null);
         this.addMouseListener(this);
-        this.checkerColor = color;
+
         //setBounds(x, y, 85, 85);
         //setPreferredSize(new Dimension(72,72));
         setOpaque(false);
@@ -34,17 +31,15 @@ public class CheckerButton  extends JButton implements MouseListener,
     public void Highlighted(){
         setHighlighted(true);
         this.setIcon(imageIcon);
-    }
-
-    public Color getCheckerColor() {
-        return checkerColor;
+        validate();
+        repaint();
     }
 
     public Position getPosition() {
         return position;
     }
 
-    public boolean isHighlighted() {
+    public boolean isHighlieghted() {
         return highlighted;
     }
 
@@ -74,15 +69,9 @@ public class CheckerButton  extends JButton implements MouseListener,
 
     @Override
     public void mouseEntered(MouseEvent e) {
-/*        setFocusable(true);
-        grabFocus();
-        setEnabled(true);*/
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-/*        setFocusable(false);
-        grabFocus();
-        setEnabled(false);*/
     }
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Player {
     protected Color color;
-    protected Checker [] myCheckers = new Checker[12];
+    protected ArrayList<Checker> myCheckers = new ArrayList<>();
 
     public Player(Color color) {
         this.color = color;
@@ -23,7 +23,7 @@ public class Player {
     }
 
 
-    public void setMyCheckers(Checker[] myCheckers) {
+    public void setMyCheckers(ArrayList<Checker> myCheckers) {
         this.myCheckers = myCheckers;
     }
 
@@ -34,26 +34,16 @@ public class Player {
     }
 
 
-    public Checker[] getMyCheckers() {
+    public ArrayList<Checker> getMyCheckers() {
         return myCheckers;
     }
 
     public void addChecker(Checker checker) {
-        for (int i = 0; i < getMyCheckers().length; i++) {
-            if (getMyCheckers()[i] == null) {
-                getMyCheckers()[i] = checker;
-            }
-        }
+        myCheckers.add(checker);
     }
-    public void deleteAPiece(Checker checker){
-        Checker c;
-        for (int i = 0; i<getMyCheckers().length;i++){
-            c = getMyCheckers()[i];
-            if(c.getPosition() == checker.getPosition()){
-                getMyCheckers()[i] = getMyCheckers()[getMyCheckers().length-1];
-                getMyCheckers()[getMyCheckers().length-1] = null;
-            }
-        }
+
+    public void deleteChecker(Checker checker){
+        myCheckers.remove(checker);
     }
 
     public void setCheckedFalse(){
@@ -61,9 +51,11 @@ public class Player {
             c.setChecked(false);
         }
     }
+
     public int getCheckersLength() {
-        return getMyCheckers().length;
+        return getMyCheckers().size();
     }
+
     public ArrayList<Position> getPlayerCheckersPositions() {
         ArrayList<Position> positions = new ArrayList<>();
         for (Checker c:myCheckers ){
