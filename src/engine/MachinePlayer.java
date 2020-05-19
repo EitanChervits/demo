@@ -52,7 +52,7 @@ public class MachinePlayer extends Player {
         int bestmove = Integer.MIN_VALUE;
         int current = Integer.MIN_VALUE;
         ArrayList<Position> list = null;
-        Game gameCopy = new Game(board, color);
+        Board gameCopy = new Board(board);
         for (Checker c : board.getPlayerByColor(color).getMyCheckers()) {
                 list = board.canGo(c);//list of possible positions this checker can go to
             for (Position p:list) {
@@ -63,8 +63,8 @@ public class MachinePlayer extends Player {
                     bestmove = current;
                     move = new Move(c,p);
                 }
-                gameCopy.retract(board);//takes the board to his last version
             }
+            gameCopy = new Board(board);
         }
         return move;
     }
@@ -77,7 +77,7 @@ public class MachinePlayer extends Player {
             return eval(board);
         }
         int score;
-        Game gameCopy = new Game(board, clr);
+        Board gameCopy = new Board(board);
         ArrayList<Board> state = new ArrayList<>();
         ArrayList<Position> list = new ArrayList<Position>();
         for (Checker c : board.getPlayerByColor(clr).getMyCheckers()) {

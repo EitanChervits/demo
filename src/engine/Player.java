@@ -3,7 +3,6 @@ package engine;
 import java.util.ArrayList;
 
 public class Player {
-    private String name;
     protected Color color;
     protected ArrayList<Checker> myCheckers = new ArrayList<>();
 
@@ -12,16 +11,12 @@ public class Player {
     }
 
     public Player(String name, Color color) {
-        this.name = name;
         this.color = color;
 
 
     }
 
     // setters
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public void setColor(Color color) {
         this.color = color;
@@ -33,9 +28,6 @@ public class Player {
     }
 
     // getters
-    public String getName() {
-        return name;
-    }
 
     public Color getColor() {
         return color;
@@ -75,4 +67,5 @@ public class Player {
         MachinePlayer machinePlayer = new MachinePlayer(color,board);
         return machinePlayer.minmax(3,Integer.MAX_VALUE,Integer.MIN_VALUE);
     }
+
 }
