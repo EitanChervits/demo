@@ -12,10 +12,6 @@ public class MachinePlayer extends Player {
 
     }
 
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
     int eval(Board game) {
         if (game.piecesContiguous(board.getPlayerByColor(color))) {
             return Integer.MAX_VALUE;//returns the value of +infinity
@@ -114,5 +110,8 @@ public class MachinePlayer extends Player {
 
             }
             return beta;
+    }
+    public Move makeMove(Board board){
+        return minmax(3,Integer.MAX_VALUE,Integer.MIN_VALUE);
     }
 }

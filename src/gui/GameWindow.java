@@ -25,6 +25,7 @@ public class GameWindow extends JFrame implements MouseListener,
     private ImageIcon blackPieceImg;
 
     private Checker clickedChecker;
+    private MachinePlayer bot;
 
     public GameWindow() throws IOException {
         double wid2HeiRatio = 1066.0 / 854.0;
@@ -119,6 +120,8 @@ public class GameWindow extends JFrame implements MouseListener,
         frame.setVisible(true);
 
 
+
+
     }
 
     private static JButton getButton(String pressedFile, String notPressedFile, int width, int height) {
@@ -199,6 +202,10 @@ public class GameWindow extends JFrame implements MouseListener,
                 gameBoard.makeAMove(clickedChecker, p);
                 setImageIcons();
                 deselectFirstChecker();
+                deleteOpponentChecker(p);
+                botMakeMove(Color.BLACK,gameBoard);
+                setImageIcons();
+
             }
         }
     }
@@ -218,6 +225,18 @@ public class GameWindow extends JFrame implements MouseListener,
     private void deselectFirstChecker() {
         setFirstCheckerClicked(null);
     }
+    public void botMakeMove(Color color,Board board){
+        bot = new MachinePlayer(color,board);
+        Move botMove =  bot.makeMove(board);
+        gameBoard.makeAMove(botMove.getChecker(),botMove.getPosition());
+    }
+    public void deleteOpponentChecker(Position position){
+        if(gameBoard.getColorOfCheckerAt(position)!=gameBoard.getTurn()){
+            Player player = gameBoard.getOpponent(gameBoard.getTurn());
+            player.deleteChecker(gameBoard.getCheckerAt(position));
+        }
+    }
+
 
     @Override
     public void mousePressed(MouseEvent e) {

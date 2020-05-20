@@ -63,9 +63,6 @@ public class Player {
         }
         return positions;
     }
-    public Move makeMove(Board board){
-        MachinePlayer machinePlayer = new MachinePlayer(color,board);
-        return machinePlayer.minmax(3,Integer.MAX_VALUE,Integer.MIN_VALUE);
-    }
+
 
 }
