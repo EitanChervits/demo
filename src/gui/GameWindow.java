@@ -31,14 +31,14 @@ public class GameWindow extends JFrame implements MouseListener,
         double wid2HeiRatio = 1066.0 / 854.0;
         Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
         int screenHeight = screenDimension.height;
-        int windowHeight = (int) (0.8 * screenHeight);
+        int windowHeight = (int) (0.7 * screenHeight);
         int windowWidth = (int) (windowHeight * wid2HeiRatio);
 
         double resizeRatio = windowHeight / 854.0;
 
 
         int topHei = (int) (windowHeight * 0.14);
-        int menuWid = (int) (windowWidth * 0.3);;
+        int menuWid = (int) (windowWidth * 0.25);;
 
         whitePieceImg = getResizedIcon("WhitePlayer.png",(int) (65 * resizeRatio),(int) (65 * resizeRatio));
         blackPieceImg = getResizedIcon("BlackPlayer.png",(int) (65 * resizeRatio),(int) (65 * resizeRatio));
@@ -81,12 +81,12 @@ public class GameWindow extends JFrame implements MouseListener,
 
         JPanel rightBtm = new JPanel();
         rightBtm.setOpaque(false);
-        rightBtm.setPreferredSize(new Dimension(626, 135));
+        rightBtm.setPreferredSize(new Dimension(windowWidth - menuWid - 90, 135));
         right2.add(rightBtm, BorderLayout.PAGE_END);
 
         right = new JPanel();
         right.setOpaque(false);
-        right.setPreferredSize(new Dimension(windowWidth - menuWid - 110,600));
+        right.setPreferredSize(new Dimension(windowWidth - menuWid - 90,500));
         right.setLayout(new GridLayout(8,8));
         updateBoard();
         setImageIcons();
