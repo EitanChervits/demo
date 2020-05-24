@@ -31,14 +31,15 @@ public class GameWindow extends JFrame implements MouseListener,
         double wid2HeiRatio = 1066.0 / 854.0;
         Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
         int screenHeight = screenDimension.height;
-        int windowHeight = (int) (0.8 * screenHeight);
+        int windowHeight = (int) (0.7 * screenHeight);
         int windowWidth = (int) (windowHeight * wid2HeiRatio);
 
         double resizeRatio = windowHeight / 854.0;
 
 
         int topHei = (int) (windowHeight * 0.14);
-        int menuWid = (int) (windowWidth * 0.3);;
+        int menuWid = (int) (windowWidth * 0.31);
+        System.out.println(windowHeight);
 
         whitePieceImg = getResizedIcon("WhitePlayer.png",(int) (65 * resizeRatio),(int) (65 * resizeRatio));
         blackPieceImg = getResizedIcon("BlackPlayer.png",(int) (65 * resizeRatio),(int) (65 * resizeRatio));
@@ -63,17 +64,13 @@ public class GameWindow extends JFrame implements MouseListener,
 
         JPanel menu = new JPanel();
         menu.setOpaque(false);
-        menu.setPreferredSize(new Dimension(260, windowHeight - topHei - 35));
+        menu.setPreferredSize(new Dimension((int) (0.92 * menuWid), (int) (0.82 * windowHeight)));
 
         JPanel menu2 = new JPanel();
         menu2.setOpaque(false);
-        menu2.setPreferredSize(new Dimension(menuWid, windowHeight - topHei - 35));
-        JPanel menuRight = new JPanel();
-        menuRight.setOpaque(false);
-        menuRight.setPreferredSize(new Dimension(0, windowHeight - topHei - 35));
+        menu2.setPreferredSize(new Dimension(menuWid, (int) (0.82 * windowHeight)));
         menu2.setLayout(new BorderLayout());
         menu2.add(menu, BorderLayout.LINE_START);
-        menu2.add(menuRight, BorderLayout.LINE_END);
 
         JPanel right2 = new JPanel();
         right2.setOpaque(false);
@@ -81,12 +78,12 @@ public class GameWindow extends JFrame implements MouseListener,
 
         JPanel rightBtm = new JPanel();
         rightBtm.setOpaque(false);
-        rightBtm.setPreferredSize(new Dimension(626, 135));
+        rightBtm.setPreferredSize(new Dimension((int) (0.59 * windowWidth), (int) (0.165 * windowHeight)));
         right2.add(rightBtm, BorderLayout.PAGE_END);
 
         right = new JPanel();
         right.setOpaque(false);
-        right.setPreferredSize(new Dimension(windowWidth - menuWid - 110,600));
+        right.setPreferredSize(new Dimension((int) (0.59 * windowWidth),(int) (0.558 * windowWidth)));
         right.setLayout(new GridLayout(8,8));
         updateBoard();
         setImageIcons();
