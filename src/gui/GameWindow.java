@@ -190,10 +190,14 @@ public class GameWindow extends JFrame implements MouseListener,
             if (gameBoard.getTurn() == gameBoard.getColorOfCheckerAt(p)) {
                 System.out.println("Clicked on [" + p.getX() + "," + p.getY() +"]");
                 Checker c = gameBoard.getCheckerAt(p);
-                if (!isFirstCheckerClicked()) {
+                if (!isFirstCheckerClicked())
+                {
+                    System.out.println("first set");
                     setFirstCheckerClicked(c);
+                    setClickedCanGo(c);
                 } else if (isClickedFirstCheckerAgain(c)) {
                     deselectFirstChecker();
+                    setImageIcons();
                 }
             } else if (isFirstCheckerClicked()) {
                 gameBoard.makeAMove(clickedChecker, p);
@@ -233,6 +237,13 @@ public class GameWindow extends JFrame implements MouseListener,
             player.deleteChecker(gameBoard.getCheckerAt(position));
         }
     }
+    public void setClickedCanGo(Checker checker){
+        ArrayList<Position>position = gameBoard.canGo(checker);
+        for (Position pos : position) {
+            CheckerButton cb = findByPosition(pos);
+            cb.setIcon(CheckerButton.imageIcon);
+        }
+    }
 
 
     @Override
@@ -269,7 +280,8 @@ public class GameWindow extends JFrame implements MouseListener,
         if(temp instanceof CheckerButton) {
             CheckerButton hovered = (CheckerButton) temp;
             Position p = hovered.getPosition();
-            if (gameBoard.getTurn() == gameBoard.getColorOfCheckerAt(p)) {
+            if (gameBoard.getTurn() == gameBoard.getColorOfCheckerAt(p)&&!isFirstCheckerClicked())
+            {
                 System.out.println("Hovered on [" + p.getX() + "," + p.getY() +"]");
                 Checker c = gameBoard.getCheckerAt(p);
                 ArrayList<Position> positions = gameBoard.canGo(c);

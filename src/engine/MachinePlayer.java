@@ -9,6 +9,7 @@ public class MachinePlayer extends Player {
     public MachinePlayer(Color color, Board boardOG) {
         super(color);
         this.board = new Board(boardOG);
+        this.myCheckers = this.board.getPlayerByColor(color).getMyCheckers();
 
     }
 
