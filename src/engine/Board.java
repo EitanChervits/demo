@@ -23,8 +23,8 @@ import java.util.Stack;
         checkers = new Checker[8][8];
         for (int i = 0; i <8 ; i++) {
             for (int j = 0; j <8 ; j++) {
-                Color color = getColorOfCheckerAt(i,j);
-                checkers[i][j] = color==null?null:new Checker(color,i,j);
+                Color color = copy.getColorOfCheckerAt(i,j);
+                checkers[i][j] = color == null ? null : new Checker(color,i,j);
             }
         }
         setPlayersCheckers();
@@ -292,7 +292,7 @@ import java.util.Stack;
 
     }
     //checks if each one of the players got all of his pieces in a sequence
-   protected  Color GameOver(){
+   public  Color GameOver(){
         boolean whitePlayer = piecesContiguous(white);
         boolean blackPlayer = piecesContiguous(black);
         return (whitePlayer)?(blackPlayer)?
