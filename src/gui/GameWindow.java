@@ -29,9 +29,7 @@ public class GameWindow extends JFrame implements MouseListener,
 
     public GameWindow() throws IOException {
         double wid2HeiRatio = 1066.0 / 854.0;
-        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-        int screenHeight = screenDimension.height;
-        int windowHeight = (int) (0.7 * screenHeight);
+        int windowHeight = 720;
         int windowWidth = (int) (windowHeight * wid2HeiRatio);
 
         double resizeRatio = windowHeight / 854.0;
@@ -39,7 +37,6 @@ public class GameWindow extends JFrame implements MouseListener,
 
         int topHei = (int) (windowHeight * 0.14);
         int menuWid = (int) (windowWidth * 0.31);
-        System.out.println(windowHeight);
 
         whitePieceImg = getResizedIcon("WhitePlayer.png",(int) (65 * resizeRatio),(int) (65 * resizeRatio));
         blackPieceImg = getResizedIcon("BlackPlayer.png",(int) (65 * resizeRatio),(int) (65 * resizeRatio));
@@ -83,7 +80,7 @@ public class GameWindow extends JFrame implements MouseListener,
 
         right = new JPanel();
         right.setOpaque(false);
-        right.setPreferredSize(new Dimension((int) (0.59 * windowWidth),(int) (0.558 * windowWidth)));
+        right.setPreferredSize(new Dimension((int) (0.58 * windowWidth),(int) (0.56 * windowWidth)));
         right.setLayout(new GridLayout(8,8));
         updateBoard();
         setImageIcons();
@@ -100,7 +97,6 @@ public class GameWindow extends JFrame implements MouseListener,
         menu.add(play, gbc);
         menu.add(getButton("RestartBTNpressed.png", "RestartBTNnotpressed.png", btnWidth, bthHeight), gbc);
         menu.add(getButton("PauseBTNpressed.png", "PauseBTNnotpressed.png", btnWidth, bthHeight), gbc);
-        menu.add(getButton("MainMenuBTNpressed.png", "MainMenuBTNnotpressed.png", btnWidth, bthHeight), gbc);
 
         frame.add(top, BorderLayout.PAGE_START);
         frame.add(menu2, BorderLayout.LINE_START);
@@ -203,9 +199,9 @@ public class GameWindow extends JFrame implements MouseListener,
                 gameBoard.makeAMove(clickedChecker, p);
                 setImageIcons();
                 deselectFirstChecker();
-                if (gameBoard.GameOver() != null)
+                if (gameBoard.GameOver() != null){
                     System.out.println("GAME OVER");
-                deleteOpponentChecker(p);
+                }
                 botMakeMove(Color.BLACK,gameBoard);
                 setImageIcons();
                 if (gameBoard.GameOver() != null)
@@ -235,12 +231,7 @@ public class GameWindow extends JFrame implements MouseListener,
         Move botMove =  bot.makeMove(board);
         gameBoard.makeAMove(botMove.getChecker(),botMove.getPosition());
     }
-    public void deleteOpponentChecker(Position position){
-        if(gameBoard.getColorOfCheckerAt(position)!=gameBoard.getTurn()){
-            Player player = gameBoard.getOpponent(gameBoard.getTurn());
-            player.deleteChecker(gameBoard.getCheckerAt(position));
-        }
-    }
+
     public void setClickedCanGo(Checker checker){
         ArrayList<Position>position = gameBoard.canGo(checker);
         for (Position pos : position) {

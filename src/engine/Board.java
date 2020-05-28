@@ -287,9 +287,11 @@ import java.util.Stack;
     //the function switches between the moving checker and the distention cell and clears the moving cell
 //	plus changes the position of the moving checker in the players' checkers array
     public void makeAMove(Checker checker,Position position){
+        if(getColorOfCheckerAt(position)!=checker.getColor()) {
+            getOpponent(getTurn()).deleteChecker(getCheckerAt(position));
+        }
         setCheckerAt(checker,position);
         changeTurn();
-
     }
     //checks if each one of the players got all of his pieces in a sequence
    public  Color GameOver(){
