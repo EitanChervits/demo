@@ -185,6 +185,7 @@ public class GameWindow extends JFrame implements MouseListener,
             }
 
         }
+        play.removeActionListener(this);
     }
 
     public void makeBoardActive(){
