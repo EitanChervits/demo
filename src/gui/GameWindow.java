@@ -222,7 +222,7 @@ public class GameWindow extends JFrame implements MouseListener,
                 gameBoard.makeAMove(clickedChecker, p);
                 setImageIcons();
                 deselectFirstChecker();
-                if (gameBoard.GameOver() != null&&frame!=null){
+                if (gameBoard.GameOver() != null&&frame.isActive()){
                    deactivateBoard();
                     frame.dispose();
                    endMessage(Color.WHITE);
