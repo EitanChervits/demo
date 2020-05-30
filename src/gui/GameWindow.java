@@ -16,10 +16,13 @@ import java.util.ArrayList;
 
 public class GameWindow extends JFrame implements MouseListener,
         ActionListener {
+    private JFrame frame;
     private CheckerButton[][] checkerButtons;
     private JPanel right;
     private Board gameBoard;
     private JButton play;
+    private JButton pause;
+    private JButton restart;
 
     private ImageIcon whitePieceImg;
     private ImageIcon blackPieceImg;
@@ -43,7 +46,7 @@ public class GameWindow extends JFrame implements MouseListener,
 
 
         gameBoard = new Board();
-        JFrame frame = new JFrame("Lines Of Action");
+        frame = new JFrame("Lines Of Action");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.setResizable(false);
@@ -95,8 +98,12 @@ public class GameWindow extends JFrame implements MouseListener,
         play = getButton("PlayBTNpressed.png", "PlayBTNnotpressed.png", btnWidth, bthHeight);
         play.addActionListener(this);
         menu.add(play, gbc);
-        menu.add(getButton("RestartBTNpressed.png", "RestartBTNnotpressed.png", btnWidth, bthHeight), gbc);
-        menu.add(getButton("PauseBTNpressed.png", "PauseBTNnotpressed.png", btnWidth, bthHeight), gbc);
+        pause =   getButton("PauseBTNpressed.png", "PauseBTNnotpressed.png", btnWidth, bthHeight);
+        pause.addActionListener(this);
+        menu.add(pause, gbc);
+        restart =getButton("RestartBTNpressed.png", "RestartBTNnotpressed.png", btnWidth, bthHeight);
+        restart.addActionListener(this);
+        menu.add(restart, gbc);
 
         frame.add(top, BorderLayout.PAGE_START);
         frame.add(menu2, BorderLayout.LINE_START);
@@ -167,6 +174,16 @@ public class GameWindow extends JFrame implements MouseListener,
         if (e.getSource() == play) {
             makeBoardActive();
         }
+        else if(e.getSource()==pause)deactivateBoard();
+        else if(e.getSource()==restart) {
+            frame.dispose();
+            try {
+                GameWindow gameWindow = new GameWindow();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+
+        }
     }
 
     public void makeBoardActive(){
@@ -176,6 +193,13 @@ public class GameWindow extends JFrame implements MouseListener,
             }
         }
     }
+    public void deactivateBoard(){
+        for (int i = 0; i <8 ; i++) {
+            for (int j = 0; j < 8; j++) {
+                checkerButtons[i][j].removeMouseListener(this);
+            }
+        }
+        }
 
     @Override
     public void mouseClicked(MouseEvent e) {
